@@ -1,5 +1,5 @@
 import actions from './actions';
-import initialState from '../../demoData/topicData.json';
+//import initialState from '../../demoData/topicData.json';
 import axios from "../../utility/axios";
 
 const { loadTopicBegin, loadTopicSuccess, loadTopicErr } = actions;

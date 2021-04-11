@@ -1,5 +1,5 @@
 import actions from "./actions";
-import initialState from '../../demoData/subjectData.json';
+//import initialState from '../../demoData/subjectData.json';
 import axios from "../../utility/axios";
 
 const { loadSubjectBegin, loadSubjectSuccess, loadSubjectErr } = actions;

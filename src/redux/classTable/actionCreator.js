@@ -1,5 +1,5 @@
 import actions from './actions';
-import initialState from '../../demoData/classData.json';
+//import initialState from '../../demoData/classData.json';
 import axios from "../../utility/axios";
 
 

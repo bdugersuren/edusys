@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radio, Input } from "antd";
+import { Radio } from "antd";
 
 import {
   CgMaximize,
@@ -9,34 +9,15 @@ import {
 } from "react-icons/cg";
 
 import {
-  BiChevronRight,
-  BiChevronDown,
   BiCheckboxChecked,
   BiCheckbox,
-  BiCheckboxSquare,
-  BiVerticalCenter,
-  BiBookOpen,
-  BiBook,
-  BiBookReader,
   BiArrowFromTop,
-  BiBookHeart,
+  BiSortUp
 } from "react-icons/bi";
-import AnswerComp from "../AnswerComp";
 
-import {
-  GrAddCircle,
-  GrCheckmark,
-  GrDown,
-  GrEdit,
-  GrTask,
-} from "react-icons/gr";
 
-const onChange = (e) => {
-  console.log("radio checked", e.target.value);
-  // this.setState({
-  //   value: e.target.value,
-  // });
-};
+
+
 
 const radioStyle = {
   display: "block",
@@ -49,10 +30,15 @@ function TaskItem({ task, setSelectedTasks }) {
   const [isQuestions, setIsQuestions] = useState(false);
   const [isChoose, setIsChoose] = useState(false);
   const [value, setValue] = useState(null);
+
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
   return (
-    <div className="taskitem" style={{ fontSize: "20px" }}>
-       <div className="flex"> {/*Энэ бол толгойн хэсэг */}
-        <div onClick={() => setSelectedTasks()}>
+    <div className="m-3" style={{ fontSize: "20px" }}>
+       <div className="flex m-5"> {/*Энэ бол толгойн хэсэг */}
+        <div onClick={() => setIsChoose(!isChoose)}>
           {isChoose ? <BiCheckboxChecked /> : <BiCheckbox />}
         </div>
         <div>
@@ -60,7 +46,7 @@ function TaskItem({ task, setSelectedTasks }) {
           <div>{task.title}</div>
         </div>
         <div>
-          <GrAddCircle />
+          <BiSortUp />
         </div>
         <div>
           <BiArrowFromTop />
@@ -79,14 +65,14 @@ function TaskItem({ task, setSelectedTasks }) {
       </div>
 
       {isQuestions && (
-        <div className="task-body">
-          <div className="taskitem-content">{task.questions}</div>
+        <div className="p-10 border-2">
+          <div className="">{task.questions}</div>
 
           {isAnswer && (
             <Radio.Group onChange={onChange} value={value}>
               {task.q_answer.length > 0 &&
                 task.q_answer.map((ans) => (
-                  <Radio style={radioStyle} value={ans._id}>
+                  <Radio key={ans._id} style={radioStyle} value={ans._id}>
                     {ans.answer1}
                   </Radio>
                 ))}

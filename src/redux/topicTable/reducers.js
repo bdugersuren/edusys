@@ -1,5 +1,5 @@
 import actions from './actions';
-import initialState from '../../demoData/topicData.json';
+//import initialState from '../../demoData/topicData.json';
 
 const { LOAD_TOPIC_BEGIN, LOAD_TOPIC_SUCCESS, LOAD_TOPIC_ERR,FILTER_TOPIC_DATAS } = actions;
 
@@ -27,7 +27,7 @@ const topicTableReducer = (state = initialStateFilter, action) => {
         console.log(data.subject_id, "<=======>", data.class_id);
         return {
           ...state,
-          topics: (data.class_id&&data.subject_id)&&state.topics.filter(cls=>cls.class_id==data.class_id).filter(sid=>sid.subject_id==data.subject_id),
+          topics: (data.class_id&&data.subject_id)&&state.topics.filter(cls=>cls.class_id===data.class_id).filter(sid=>sid.subject_id===data.subject_id),
           loading: false,
         };
     case LOAD_TOPIC_ERR:

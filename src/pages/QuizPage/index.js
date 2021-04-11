@@ -1,7 +1,7 @@
 import React from 'react'
 import PaginationComp from "../../components/PaginationComp";
 import TasksComp from "../../components/TasksComp";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 function QuizPage() {
     const subjectTableData = useSelector((state) => state.subjectTable.data);

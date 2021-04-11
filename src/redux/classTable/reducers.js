@@ -1,5 +1,5 @@
 import actions from './actions';
-import initialState from '../../demoData/classData.json';
+//import initialState from '../../demoData/classData.json';
 
 const { LOAD_CLASS_BEGIN, LOAD_CLASS_SUCCESS, LOAD_CLASS_ERR } = actions;
 

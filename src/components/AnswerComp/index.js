@@ -19,8 +19,3 @@ function AnswerComp({answers}) {
 
 export default AnswerComp;
 
-
-
-            {/* <CheckBoxAnswer />
-            <CheckBoxAnswer />
-            <CheckBoxAnswer /> */}

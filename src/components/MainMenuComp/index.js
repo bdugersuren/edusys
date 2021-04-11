@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Menu } from "antd";
 import {
   MailOutlined,
-  AppstoreOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector} from "react-redux";
 
-import { loadRouteMenus } from "../../redux/roleMenu/actionCreator";
 import { Link } from "react-router-dom";
 
-const x = "AppstoreOutlined";
+
 const { SubMenu } = Menu;
 const MainMenuComp = () => {
   const [current, setCurrent] = useState(["mail"]);
@@ -19,7 +17,7 @@ const MainMenuComp = () => {
     console.log("click ", e);
     setCurrent([...current, e.key]);
   };
-  const dispatch = useDispatch();
+
   const roleMenuDate = useSelector((state) => state.roleMenu.data);
 
   return (

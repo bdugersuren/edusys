@@ -1,0 +1,325 @@
+[
+  {
+    "key": 101,
+    "title": "Энгийн бутархай",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 1,
+    "children": [
+      {
+        "title": "Энгийн бутархай",
+        "key": 101001,
+        "description": "2-р ангийн мэдээлэл",
+        "children": [
+          {
+            "title": "Нэмэх",
+            "description": "2-р ангийн мэдээлэл",
+            "key": 10100101,
+            "children": []
+          },
+          {
+            "title": "Хасах",
+            "description": "2-р ангийн мэдээлэл",
+            "key": 10100102,
+            "children": []
+          },
+          {
+            "title": "Үржих",
+            "description": "2-р ангийн мэдээлэл",
+            "key": 10100103,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": 102,
+    "title": "Аравтын бутархай",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 1,
+    "children": []
+  },
+  {
+    "key": 103,
+    "title": "Арифметик үйлдэл",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 1,
+    "children": []
+  },
+
+  {
+    "key": 201,
+    "title": "Эгшиг зохицох",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 7,
+    "subject_id": 2,
+    "children": []
+  },
+  {
+    "key": 202,
+    "title": "Эгшигт гийгүүлэгч",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 7,
+    "subject_id": 2,
+    "children": []
+  },
+  {
+    "key": 203,
+    "title": "Заримдаг гийгүүлэгч",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 7,
+    "subject_id": 2,
+    "children": []
+  },
+  {
+    "key": 301,
+    "title": "Монголын уран зохиол",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 3,
+    "children": []
+  },
+  {
+    "key": 302,
+    "title": "Сонгодог уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 3,
+    "children": []
+  },
+  {
+    "key": 303,
+    "title": "Гадаадын уран зохиол",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 3,
+    "children": []
+  },
+
+  {
+    "key": 401,
+    "title": "Химийн урвал",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 4,
+    "children": []
+  },
+  {
+    "key": 402,
+    "title": "Үелэх систем",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 4,
+    "children": []
+  },
+  {
+    "key": 403,
+    "title": "Бодисын нягт",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 4,
+    "children": []
+  },
+
+  {
+    "key": 501,
+    "title": "Механик",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 5,
+    "children": []
+  },
+  {
+    "key": 502,
+    "title": "Кинематик",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 5,
+    "children": []
+  },
+  {
+    "key": 503,
+    "title": "Таталцлын хууль",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 5,
+    "children": []
+  },
+  {
+    "key": 601,
+    "title": "Хэвлээр явагч",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 9,
+    "subject_id": 6,
+    "children": []
+  },
+  {
+    "key": 602,
+    "title": "Мөлхөгч",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 9,
+    "subject_id": 6,
+    "children": []
+  },
+  {
+    "key": 603,
+    "title": "Хийн солилцоо",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 9,
+    "subject_id": 6,
+    "children": []
+  },
+
+  {
+    "key": 701,
+    "title": "Монгол хэл",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 7,
+    "subject_id": 7,
+    "children": []
+  },
+  {
+    "key": 702,
+    "title": "Уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 7,
+    "children": []
+  },
+  {
+    "key": 703,
+    "title": "Хими",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 7,
+    "children": []
+  },
+
+  {
+    "key": 801,
+    "title": "Монгол хэл",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 8,
+    "children": []
+  },
+  {
+    "key": 802,
+    "title": "Уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 7,
+    "subject_id": 8,
+    "children": []
+  },
+  {
+    "key": 803,
+    "title": "Хими",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 8,
+    "children": []
+  },
+
+  {
+    "key": 901,
+    "title": "Монгол хэл",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 10,
+    "subject_id": 9,
+    "children": []
+  },
+  {
+    "key": 902,
+    "title": "Уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 9,
+    "children": []
+  },
+  {
+    "key": 903,
+    "title": "Хими",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 9,
+    "children": []
+  },
+
+  {
+    "key": 1001,
+    "title": "Монгол хэл",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 10,
+    "subject_id": 10,
+    "children": []
+  },
+  {
+    "key": 1002,
+    "title": "Уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 11,
+    "subject_id": 10,
+    "children": []
+  },
+  {
+    "key": 1003,
+    "title": "Хими",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 12,
+    "subject_id": 10,
+    "children": []
+  },
+
+  {
+    "key": 1101,
+    "title": "Монгол хэл",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 6,
+    "subject_id": 11,
+    "children": []
+  },
+  {
+    "key": 1102,
+    "title": "Уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 11,
+    "children": []
+  },
+  {
+    "key": 1103,
+    "title": "Хими",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 11,
+    "children": []
+  },
+
+  {
+    "key": 1201,
+    "title": "Монгол хэл",
+    "description": "2-р ангийн мэдээлэл",
+    "class_id": 10,
+    "subject_id": 12,
+    "children": []
+  },
+  {
+    "key": 1202,
+    "title": "Уран зохиол",
+    "description": "3-р ангийн мэдээлэл",
+    "class_id": 9,
+    "subject_id": 12,
+    "children": []
+  },
+  {
+    "key": 1203,
+    "title": "Хими",
+    "description": "4-р ангийн мэдээлэл",
+    "class_id": 8,
+    "subject_id": 12,
+    "children": []
+  }
+]

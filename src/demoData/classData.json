@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "classLevel_id": 1,
+    "name": "1-р анги",
+    "description": "1-р ангийн мэдээлэл"
+  },
+  {
+    "id": "2",
+    "classLevel_id": 1,
+    "name": "2-р анги",
+    "description": "2-р ангийн мэдээлэл"
+  },
+  {
+    "id": "3",
+    "classLevel_id": 1,
+    "name": "3-р анги",
+    "description": "3-р ангийн мэдээлэл"
+  },
+  {
+    "id": "4",
+    "classLevel_id": 1,
+    "name": "4-р анги",
+    "description": "4-р ангийн мэдээлэл"
+  },
+  {
+    "id": "5",
+    "classLevel_id": 1,
+    "name": "5-р анги",
+    "description": "5-р ангийн мэдээлэл"
+  },
+  {
+    "id": "6",
+    "classLevel_id": 2,
+    "name": "6-р анги",
+    "description": "6-р ангийн мэдээлэл"
+  },
+  {
+    "id": "7",
+    "classLevel_id": 2,
+    "name": "7-р анги",
+    "description": "7-р ангийн мэдээлэл"
+  },
+  {
+    "id": "8",
+    "classLevel_id": 2,
+    "name": "8-р анги",
+    "description": "8-р ангийн мэдээлэл"
+  },
+  {
+    "id": "9",
+    "classLevel_id": 2,
+    "name": "9-р анги",
+    "description": "9-р ангийн мэдээлэл"
+  },
+  {
+    "id": "10",
+    "classLevel_id": 3,
+    "name": "10-р анги",
+    "description": "10-р ангийн мэдээлэл"
+  },
+  {
+    "id": "11",
+    "classLevel_id": 3,
+    "name": "11-р анги",
+    "description": "11-р ангийн мэдээлэл"
+  },
+  {
+    "id": "12",
+    "classLevel_id": 3,
+    "name": "12-р анги",
+    "description": "12-р ангийн мэдээлэл"
+  }
+]

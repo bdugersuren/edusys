@@ -1,0 +1,139 @@
+[
+    {
+        "id":"000",
+		"component": "TaskBankPage",
+		"path": "/",
+		"title": "Нүүр хуудас",
+		"exact": true,
+        "role_id":"01",
+        "children":[]
+	},
+
+	{
+        "id":"001",
+		"component": "QuizPage",
+		"path": "/quiz",
+		"title": "Тест",
+		"exact": true,
+        "role_id":"01",
+        "children":[
+            {
+                "id":"001-01",
+                "component": "TaskCreate",
+                "path": "/quiz",
+                "title": "Даалгавын жагсаалт",
+                "exact": true,
+                "role_id":"01",
+                "children":[]
+            },
+            {
+                "id":"001-02",
+                "component": "TaskUpdate",
+                "path": "/quiz",
+                "title": "Даалгавар засах",
+                "exact": true,
+                "role_id":"01",
+                "children":[]
+            },
+            {
+                "id":"001-03",
+                "component": "TaskDelete",
+                "path": "/quiz/:id",
+                "title": "Даалгавар устгах",
+                "exact": true,
+                "role_id":"01",
+                "children":[{
+                    "id":"001-02-01",
+                    "component": "TaskUpdate",
+                    "path": "/tms/task/lst",
+                    "title": "Даалгавар засах",
+                    "exact": true,
+                    "role_id":"01",
+                    "children":[]
+                },
+                {
+                    "id":"001-03-02",
+                    "component": "TaskDelete",
+                    "path": "/tms/task/:id",
+                    "title": "Даалгавар устгах",
+                    "exact": true,
+                    "role_id":"01",
+                    "children":[{
+                        "id":"001-03-02-01",
+                        "component": "TaskDelete",
+                        "path": "/tms/task/:id",
+                        "title": "Даалгавар устгах",
+                        "exact": true,
+                        "role_id":"01",
+                        "children":[]
+                    }]
+                }
+            ]
+            }
+        ]
+	},
+    {
+        "id":"002",
+		"component": "TaskBankPage",
+		"path": "/taskbank",
+		"title": "Даалгаврын сан",
+		"exact": true,
+        "role_id":"01",
+        "children":[
+            {
+                "id":"002-01",
+                "component": "QuizCreate",
+                "path": "/taskbank",
+                "title": "Даалгаврын жагсаалт",
+                "exact": true,
+                "role_id":"01",
+                "children":[]
+            },
+            {
+                "id":"002-02",
+                "component": "QuizUpdate",
+                "path": "/taskbank",
+                "title": "Тест засах",
+                "exact": true,
+                "role_id":"01",
+                "children":[]
+            },
+            {
+                "id":"002-03",
+                "component": "QuizDelete",
+                "path": "/taskbank/:id",
+                "title": "Тест устгах",
+                "exact": true,
+                "role_id":"01",
+                "children":[]
+            }
+        ]
+	},
+    {
+        "id":"003",
+		"component": "TaskBankPage",
+		"path": "/login",
+		"title": "Нэвтрэх",
+		"exact": true,
+        "role_id":"01",
+        "children":[]
+	},
+    {
+        "id":"004",
+		"component": "TaskBankPage",
+		"path": "/register",
+		"title": "Бүртгүүлэх",
+		"exact": true,
+        "role_id":"01",
+        "children":[]
+	},
+    {
+        "id":"005",
+		"component": "TaskBankPage",
+		"path": "/forget",
+		"title": "Нууц үгээ мартсан",
+		"exact": true,
+        "role_id":"01",
+        "children":[]
+	}
+]

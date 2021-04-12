@@ -18,6 +18,15 @@ import { Select, Tree, Pagination } from "antd";
 const { Option } = Select;
 
 function TaskBankPage() {
+
+  //const [checked, setChecked] = useState([]);
+  //const [expanded, setExpanded] = useState([]);
+  const [classId, setClassId] = useState(null);
+  const [subjectId, setSubjectId] = useState(null);
+  const [checkedTrees, setCheckedTrees] = useState([]);
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadTopicDatas());
@@ -26,12 +35,33 @@ function TaskBankPage() {
     dispatch(loadTaskDatas());
   }, []);
 
-  //const [checked, setChecked] = useState([]);
-  //const [expanded, setExpanded] = useState([]);
-  const [classId, setClassId] = useState(null);
-  const [subjectId, setSubjectId] = useState(null);
-  const [checkedTrees, setCheckedTrees] = useState([]);
-  const [selectedTasks, setSelectedTasks] = useState([]);
+  useEffect(() => {
+    let filteredData=[];
+    taskTableData
+      .filter((t) => checkedTrees.includes(t.topic_id))
+      .map((t) => {
+          const { _id, questions, q_answer, title, description, ndx , topic_id, user_id, taskLevel_id} = t;
+          return filteredData.push({
+            checked:false,
+            isExpentTask:false,
+            isExpentAns:false,
+            _id,
+            questions,
+            title,
+            description,
+            q_answer,
+            ndx,
+            topic_id,
+            user_id,
+            taskLevel_id
+          });
+      });
+      setFilteredTasks(filteredData);
+      console.log("================>",filteredTasks);
+  }, [checkedTrees]);
+
+
+ 
 
   const subjectTableData = useSelector((state) => state.subjectTable.data);
   const classTableData = useSelector((state) => state.classTable.data);
@@ -80,10 +110,7 @@ function TaskBankPage() {
         });
       });
 
-  const filteredTasks = taskTableData.filter((t) =>
-    checkedTrees.includes(t.topic_id)
-  );
-
+  
   function onChange(value) {
     console.log(`selected ${value}`);
   }
@@ -160,6 +187,7 @@ function TaskBankPage() {
           <Pagination
             showQuickJumper
             defaultCurrent={1}
+            defaultPageSize={2}
             total={filteredTasks.length}
             onChange={onChange}
           />

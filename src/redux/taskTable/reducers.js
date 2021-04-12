@@ -5,6 +5,11 @@ const { LOAD_TASK_BEGIN, LOAD_TASK_SUCCESS, LOAD_TASK_ERR,FILTER_TASK_DATAS } = 
 
 const initialStateFilter = {
   tasks: [],
+  filteredTasks:[],
+  taskTypeId:null,
+  userId:null,
+  topicId:null,
+  taskLevelId:null,
   loading: false,
   error: null,
 };

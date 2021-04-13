@@ -1,0 +1,45 @@
+.SelectFixed {
+    position: fixed;
+    display: inline-block;
+   
+    margin-top: 0;
+}
+.taskbank {
+  margin-top: 2px;
+  /* background: #feca57; */
+  height: 75vh;
+}
+.taskTree {
+    border: 1px solid #000;
+    background: #1757ee;
+    height: 75vh;
+}
+
+.RightFixed {
+    background: #fff;
+    height: 75vh;
+}
+.TaskBody {
+    overflow-y: scroll;
+    height: 75vh;
+}
+.button {
+    margin: 0.25rem;
+}
+
+.TaskFixedIcons {
+    color: #00d2d3;
+    font-size: 1.25rem;
+    padding: 0.25rem;
+    cursor:pointer;
+}
+
+.TaskRightFixedIcons {
+    position: fixed;
+    color: #00d2d3;
+    font-size: 2rem;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    cursor: pointer;
+    /* margin: 0 0 3rem 0; */
+   
+}

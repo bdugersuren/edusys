@@ -590,6 +590,9 @@ video {
   text-transform: uppercase;
 }
 
+.test-tailwind { --tw-bg-opacity: 1; background-color: rgba(55, 65, 81, var(--tw-bg-opacity)); font-weight: 700; font-size: 1.25rem; line-height: 1.75rem; --tw-text-opacity: 1; color: rgba(236, 72, 153, var(--tw-text-opacity));
+}
+
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));

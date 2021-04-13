@@ -145,23 +145,8 @@ function TaskBankPage() {
   return (
     <>
       <Row>
-        <Col xs={4} sm={4} md={4} lg={4} xl={4}>
-          <div className={styles.TaskFixedIcons}>
-            <FormOutlined className={styles.TaskFixedIcons} />{" "}
-            <FileAddOutlined className={styles.TaskFixedIcons} />
-            <CopyOutlined className={styles.TaskFixedIcons} />
-            <ScissorOutlined className={styles.TaskFixedIcons} />
-            <PrinterOutlined className={styles.TaskFixedIcons} />
-            <PaperClipOutlined className={styles.TaskFixedIcons} />
-            <PictureOutlined className={styles.TaskFixedIcons} />
-            <PlaySquareOutlined className={styles.TaskFixedIcons} />
-            <SaveOutlined className={styles.TaskFixedIcons} />
-            <UndoOutlined className={styles.TaskFixedIcons} />
-            <RedoOutlined className={styles.TaskFixedIcons} />
-          </div>
-        </Col>
-        <Col xs={14} sm={14} md={14} lg={14} xl={14}>
-          <div className={styles.SelectFixed}>
+        <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+        <div className={styles.SelectFixed}>
             <div>
               <label>Хичээл </label>
               <Select
@@ -196,14 +181,28 @@ function TaskBankPage() {
                 ))}
               </Select>
 
-              <div className={styles.TaskInfo1}>
-                <label>Нийт даалгавар: {filteredTasks.length}</label>
-              </div>
-
-              <div className={styles.TaskInfo2}>
-                <label>Сонгогдсон даалгавар: {selectedTasks.length}</label>
-              </div>
+             
             </div>
+          </div>
+
+
+
+
+        </Col>
+        <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+          
+        <div className={styles.TaskFixedIcons}>
+            <FormOutlined className={styles.TaskFixedIcons} />{" "}
+            <FileAddOutlined className={styles.TaskFixedIcons} />
+            <CopyOutlined className={styles.TaskFixedIcons} />
+            <ScissorOutlined className={styles.TaskFixedIcons} />
+            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <PaperClipOutlined className={styles.TaskFixedIcons} />
+            <PictureOutlined className={styles.TaskFixedIcons} />
+            <PlaySquareOutlined className={styles.TaskFixedIcons} />
+            <SaveOutlined className={styles.TaskFixedIcons} />
+            <UndoOutlined className={styles.TaskFixedIcons} />
+            <RedoOutlined className={styles.TaskFixedIcons} />
           </div>
         </Col>
         <Col xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -214,11 +213,7 @@ function TaskBankPage() {
             <Button className="btn-teal">
               Тест үүсгэх
             </Button>
-            <Button className={styles.button}>Засах</Button>
-            <Button className={styles.button}>Хувилах</Button>
-            <Button shape="round" type="primary" className={styles.button}>
-              Буцах
-            </Button>
+         
           </div>
         </Col>
       </Row>
@@ -234,6 +229,8 @@ function TaskBankPage() {
           </div>
         </Col>
         <Col xs={17} sm={17} md={17} lg={17} xl={17}>
+             
+          
           <div className={styles.TaskBody}>
             <TasksComp
               tasks={filteredTasks}

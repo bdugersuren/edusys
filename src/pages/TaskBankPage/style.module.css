@@ -26,31 +26,7 @@
 .button {
     margin: 0.25rem;
 }
-.TaskInfo1 {
-    display: inline-block;
-    width: 10rem;
-    height: 4rem;  
-    background: #ff9f43;
-    border-radius: 10px;
-}
-.TaskInfo1 label {
-    font-size: 16px;
-    color: #fff;
-    padding: 1rem;
-}
 
-.TaskInfo2 {
-    display: inline-block;
-    width: 10rem;
-    height: 4rem;
-    background: #f368e0;
-    border-radius: 10px;
-}
-.TaskInfo2 label {
-    font-size: 16px;
-    color: #fff;
-    padding: 1rem;
-}
 .TaskFixedIcons {
     color: #00d2d3;
     font-size: 1.25rem;

@@ -1,17 +1,15 @@
 import React from "react";
 import MainMenuComp from "../MainMenuComp";
 import UserInfoComp from "../UserInfoComp";
+import styles from './style.module.css';
 
 function HeaderComp() {
   return (
-    <div className="mainTopHeader">
-      <div>
-        <MainMenuComp />
-        <div className="user">
-          <UserInfoComp />
-        </div>
+    <div>
+      <div className={styles.mainTopHeader}>      
+        <MainMenuComp />       
       </div>
-      <div className=""></div>
+      {/* <div className="">sdfdsfsdfds</div> */}
     </div>
   );
 }

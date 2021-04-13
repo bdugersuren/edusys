@@ -2,7 +2,7 @@ import React from "react";
 
 function UserInfoComp() {
   return (
-    <div>s</div>
+    <div> User INFO 54</div>
   );
 }
 

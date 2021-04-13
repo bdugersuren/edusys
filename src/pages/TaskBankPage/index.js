@@ -147,11 +147,10 @@ function TaskBankPage() {
       <Row>
         <Col xs={8} sm={8} md={8} lg={8} xl={8}>
         <div className={styles.SelectFixed}>
-            <div>
-              <label>Хичээл </label>
+            <div>            
               <Select
                 showSearch
-                style={{ width: 200 }}
+                style={{ width: 160 }}
                 placeholder="Хичээл сонгох"
                 //optionFilterProp="children"
                 onChange={OnChangeSubject}
@@ -164,14 +163,12 @@ function TaskBankPage() {
                     {item.name}
                   </Option>
                 ))}
-              </Select>
-
-              <label>Анги</label>
+              </Select>&nbsp;
 
               <Select
                 showSearch
-                style={{ width: 200 }}
-                placeholder="Хичээл сонгох"
+                style={{ width: 120 }}
+                placeholder="Анги сонгох"
                 onChange={OnChangeClass}
               >
                 {classTableData.map((item) => (

@@ -6,7 +6,7 @@ const HomeLayout = (props) => {
   return (
     <div>
       <HeaderComp />
-
+<div>sadadasdsasdas</div>
       {props.children}
 
       <FooterComp />

@@ -9,12 +9,14 @@ import {
   } from "react-redux-i18n";
   import translations from "../config/i18n/translations";
 import rootReducer from './rootReducers';
+import loggerMiddleware from './middlewares/loggerMiddleware';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
  
+const middlewares= [thunk.withExtraArgument(), loggerMiddleware];
 export const store = createStore(
     rootReducer, composeEnhancers(
-            applyMiddleware(thunk.withExtraArgument())
+            applyMiddleware(...middlewares)
     )
 );
 syncTranslationWithStore(store);

@@ -20,4 +20,35 @@ const loadTaskDatas = () => {
   };
 };
 
-export { loadTaskDatas };
+const addFullTaskData = (taskData) => {
+  return async dispatch => {
+    try {
+      dispatch(loadTaskBegin());
+
+      await axios.post("tasks/full", taskData).then(({ data }) => {
+        return dispatch(loadTaskSuccess(data));
+      });
+
+      //dispatch(filterTaskDatas(topicIds));
+
+    } catch (err) {
+      dispatch(loadTaskErr(err));
+    }
+  };
+};
+
+const filterTaskDatas = (topicIds) => {
+  return async dispatch => {
+    try {
+      dispatch(loadTaskBegin());
+
+      dispatch(filterTaskDatas(topicIds));
+
+    } catch (err) {
+      dispatch(loadTaskErr(err));
+    }
+  };
+};
+
+
+export { loadTaskDatas, filterTaskDatas, addFullTaskData };

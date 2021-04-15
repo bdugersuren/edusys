@@ -91,9 +91,9 @@
             },
             {
                 "id":"002-02",
-                "component": "QuizUpdate",
-                "path": "/taskbank",
-                "title": "Тест засах",
+                "component": "CreateTaskPage",
+                "path": "/taskadd",
+                "title": "Даалгавар нэмэх",
                 "exact": true,
                 "role_id":"01",
                 "children":[]

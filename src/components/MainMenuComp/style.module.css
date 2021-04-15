@@ -3,7 +3,7 @@
     /* height: auto; */
 }
 .sysHeader {
-    background: #00d2d3;
+    background: #01A3A4;
     width: 100%;
     height: 3rem;
     /* padding: 0.5rem; */
@@ -11,3 +11,6 @@
 .sysUserIcon {
     margin: 0 1rem 0 2rem;
 }
+/* .ant-menu {
+    background: #01A3A4;
+} */

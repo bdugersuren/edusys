@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import TasksComp from "../../components/TasksComp";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col } from "antd";
+import TaskComp from "./../../components/TasksComp";
 import { loadClassDatas } from "../../redux/classTable/actionCreator";
 import { loadSubjectDatas } from "../../redux/subjectTable/actionCreator";
 import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
 import { loadTaskDatas } from "../../redux/taskTable/actionCreator";
+import { Checkbox, Descriptions } from "antd";
+
 import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
   FileAddOutlined,
+  CheckCircleOutlined,
+  EyeOutlined,
   CopyOutlined,
+  CloseOutlined,
   ScissorOutlined,
   PrinterOutlined,
   PaperClipOutlined,
@@ -19,6 +27,16 @@ import {
   UndoOutlined,
   RedoOutlined,
   FormOutlined,
+  DeleteOutlined,
+  CheckSquareOutlined,
+  BarsOutlined,
+  CompressOutlined,
+  ExpandAltOutlined,
+  MoreOutlined,
+  FolderOpenOutlined,
+  ColumnHeightOutlined,
+  FullscreenOutlined,
+  FullscreenExitOutlined,
 } from "@ant-design/icons";
 import { BiBookReader } from "react-icons/bi";
 import { Button } from "antd";
@@ -27,10 +45,39 @@ import { GrCheckmark, GrDown, GrEdit, GrTask } from "react-icons/gr";
 
 import { Select, Tree, Pagination } from "antd";
 import styles from "./style.module.css";
+import {
+  BiScan,
+  BiOutline,
+  BiVerticalCenter,
+  BiMoveVertical,
+} from "react-icons/bi";
 
 const { Option } = Select;
 
+const children = [];
+for (let i = 10; i < 36; i++) {
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
+
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
+
 function TaskBankPage() {
+  const { Option } = Select;
+
+  const [isExpendAllTask, setIsExpendAllTask] = useState(false);
+  const [isExpendAllAns, setIsExpendAllAns] = useState(false);
+
+  const SelectedTaskValue = () => {
+    setSelectedTasks(["123", "456"]);
+    console.log("8888888888888888888888888888");
+  };
+
+  function onChange(e) {
+    console.log(`checked = ${e.target.checked}`);
+  }
+
   //const [checked, setChecked] = useState([]);
   //const [expanded, setExpanded] = useState([]);
   const [classId, setClassId] = useState(null);
@@ -145,75 +192,129 @@ function TaskBankPage() {
   return (
     <>
       <Row>
-        <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-        <div className={styles.SelectFixed}>
-            <div>            
-              <Select
-                showSearch
-                style={{ width: 160 }}
-                placeholder="Хичээл сонгох"
-                //optionFilterProp="children"
-                onChange={OnChangeSubject}
-                //onFocus={onFocus}
-                //onBlur={onBlur}
-                //onSearch={onSearch}
-              >
-                {subjectTableData.map((item) => (
-                  <Option key={item._id} value={item._id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>&nbsp;
-
-              <Select
-                showSearch
-                style={{ width: 120 }}
-                placeholder="Анги сонгох"
-                onChange={OnChangeClass}
-              >
-                {classTableData.map((item) => (
-                  <Option key={item._id} value={item._id}>
-                    {item.name}
-                  </Option>
-                ))}
-              </Select>
-
-             
-            </div>
+        <Col xs={7} sm={7} md={7} lg={7} xl={7}>
+          <div className={styles.SelectFixed}>
+            <Select
+              showSearch
+              style={{ width: 168 }}
+              placeholder="Хичээл сонгох"
+              //optionFilterProp="children"
+              onChange={OnChangeSubject}
+              //onFocus={onFocus}
+              //onBlur={onBlur}
+              //onSearch={onSearch}
+            >
+              {subjectTableData.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+            &nbsp;
+            <Select
+              showSearch
+              style={{ width: 140 }}
+              placeholder="Анги сонгох"
+              onChange={OnChangeClass}
+            >
+              {classTableData.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
           </div>
-
-
-
-
         </Col>
-        <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-          
-        <div className={styles.TaskFixedIcons}>
-            <FormOutlined className={styles.TaskFixedIcons} />{" "}
-            <FileAddOutlined className={styles.TaskFixedIcons} />
+        <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+          <div className={styles.TaskFixedIcons}>
+            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
+            <ArrowRightOutlined className={styles.TaskFixedIcons} />
+            <FormOutlined className={styles.TaskFixedIcons} />
             <CopyOutlined className={styles.TaskFixedIcons} />
-            <ScissorOutlined className={styles.TaskFixedIcons} />
-            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <DeleteOutlined className={styles.TaskFixedIcons} />
             <PaperClipOutlined className={styles.TaskFixedIcons} />
-            <PictureOutlined className={styles.TaskFixedIcons} />
-            <PlaySquareOutlined className={styles.TaskFixedIcons} />
-            <SaveOutlined className={styles.TaskFixedIcons} />
-            <UndoOutlined className={styles.TaskFixedIcons} />
-            <RedoOutlined className={styles.TaskFixedIcons} />
+            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <CheckCircleOutlined className={styles.TaskFixedIcons} />
+            <EyeOutlined className={styles.TaskFixedIcons} />
           </div>
         </Col>
         <Col xs={6} sm={6} md={6} lg={6} xl={6}>
           <div>
-            <Button type="primary" className={styles.button}>
-              Даалгавар
-            </Button>
-            <Button className="btn-teal">
-              Тест үүсгэх
-            </Button>
-         
+            <Button className={styles.button}>Даалгавар үүсгэх</Button>
+            <Button className={styles.button}>Тест үүсгэх</Button>
           </div>
         </Col>
       </Row>
+
+      <Row>
+        <Col xs={5} sm={5} md={5} lg={5} xl={5}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Бүлгээр сонгох"
+            defaultValue={["a10", "c12"]}
+            onChange={handleChange}
+          >
+            {children}
+          </Select>
+        </Col>
+        <Col xs={19} sm={19} md={19} lg={19} xl={19}>
+          <div className={styles.TaskSelectItem}>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              Бүгдийг сонгох
+            </Checkbox>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              Асуулт сонгох
+            </Checkbox>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              Хариулт сонгох
+            </Checkbox>
+            <div className={styles.TaskInfoButton}>
+              <Button className={styles.TaskInfoButton} key="3">Даалгавар: {filteredTasks.length}</Button>
+              <Button className={styles.TaskInfoButton} key="2">Сонгогдсон: {selectedTasks.length} </Button>
+              <Button className={styles.TaskInfoButton} key="1">Авах оноо: 40 </Button>
+              <Button className={styles.TaskInfoButton} key="4">Шалгалт авах огноо: 2021-04-22 16:40 </Button>
+            </div>
+
+        
+
+            {/* 
+            <CheckSquareOutlined className={styles.TaskListIcons} />
+            <BarsOutlined className={styles.TaskListIcons} />
+            <CompressOutlined className={styles.TaskListIcons} />
+            <ExpandAltOutlined className={styles.TaskListIcons} />
+            <MoreOutlined className={styles.TaskListIcons} />
+            <FolderOpenOutlined className={styles.TaskListIcons} />
+            <ColumnHeightOutlined className={styles.TaskListIcons} />\
+            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
+              {isExpendAllAns ? (
+                <CheckSquareOutlined className={styles.TaskListIcons} />
+              ) : (
+                <FullscreenExitOutlined className={styles.TaskListIcons} />
+              )}
+            </button>
+            
+            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
+              {isExpendAllAns ? (
+                <FullscreenOutlined className={styles.TaskListIcons} />
+              ) : (
+                <FullscreenExitOutlined className={styles.TaskListIcons} />
+              )}
+              Бүх хариулт
+            </button>
+            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
+              {isExpendAllAns ? (
+                <FullscreenOutlined className={styles.TaskListIcons} />
+              ) : (
+                <FullscreenExitOutlined className={styles.TaskListIcons} />
+              )}*/}
+         
+          </div>
+        </Col>
+        <Col xs={0} sm={0} md={0} lg={0} xl={0}></Col>
+      </Row>
+
       <Row className={styles.taskbank}>
         <Col xs={5} sm={5} md={5} lg={5} xl={5}>
           <div className={styles.taskTree}>
@@ -225,9 +326,7 @@ function TaskBankPage() {
             />
           </div>
         </Col>
-        <Col xs={17} sm={17} md={17} lg={17} xl={17}>
-             
-          
+        <Col xs={17} sm={18} md={18} lg={18} xl={18}>
           <div className={styles.TaskBody}>
             <TasksComp
               tasks={filteredTasks}
@@ -235,8 +334,8 @@ function TaskBankPage() {
             />
           </div>
         </Col>
-        <Col xs={2} sm={2} md={2} lg={2} xl={2}>
-          <div className={styles.TaskRightFixedIcons} >
+        <Col xs={1} sm={1} md={1} lg={1} xl={1}>
+          <div className={styles.TaskRightFixedIcons}>
             <FormOutlined className={styles.TaskFixedIcons} />
             <UndoOutlined className={styles.TaskFixedIcons} />
             <RedoOutlined className={styles.TaskFixedIcons} />
@@ -250,6 +349,62 @@ function TaskBankPage() {
           </div>
         </Col>
       </Row>
+
+      {/* <Row>
+        <Col xs={7} sm={7} md={7} lg={7} xl={7}>
+          <div className={styles.SelectFixed}>
+            <Select
+              showSearch
+              style={{ width: 180 }}
+              placeholder="Хичээл сонгох"
+              //optionFilterProp="children"
+              onChange={OnChangeSubject}
+              //onFocus={onFocus}
+              //onBlur={onBlur}
+              //onSearch={onSearch}
+            >
+              {subjectTableData.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+            &nbsp;
+            <Select
+              showSearch
+              style={{ width: 160 }}
+              placeholder="Анги сонгох"
+              onChange={OnChangeClass}
+            >
+              {classTableData.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </Col>
+        <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+          <div className={styles.TaskFixedIcons}>
+            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
+            <ArrowRightOutlined className={styles.TaskFixedIcons} />
+            <FormOutlined className={styles.TaskFixedIcons} />
+            <CopyOutlined className={styles.TaskFixedIcons} />
+            <DeleteOutlined className={styles.TaskFixedIcons} />
+            <PaperClipOutlined className={styles.TaskFixedIcons} />
+            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <CheckCircleOutlined className={styles.TaskFixedIcons} />
+            <EyeOutlined className={styles.TaskFixedIcons} />
+          </div>
+        </Col>
+        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+          <div>
+            <Button className={styles.button}>Даалгавар үүсгэх</Button>
+            <Button className={styles.button}>Тест үүсгэх</Button>
+          </div>
+        </Col>
+      </Row> */}
+
       <Row>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <div>

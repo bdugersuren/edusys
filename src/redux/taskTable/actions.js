@@ -4,27 +4,27 @@ const actions = {
   LOAD_TASK_ERR: 'LOAD_TASK_ERR',
   FILTER_TASK_DATAS: 'LOAD_TASK_ERR',
 
-  loadTaskBegin: () => {
+   loadTaskBegin: () => {
     return {
       type: actions.LOAD_TASK_BEGIN,
     };
   },
 
-  loadTaskSuccess: data => {
+   loadTaskSuccess: data => {
     return {
       type: actions.LOAD_TASK_SUCCESS,
       data,
     };
   },
 
-  filterTaskDatas: data => {
+   filterTaskDatas: data => {
     return {
       type: actions.FILTER_TASK_DATAS,
       data,
     };
   },
 
-  loadTaskErr: err => {
+   loadTaskErr: err => {
     return {
       type: actions.LOAD_TASK_ERR,
       err,

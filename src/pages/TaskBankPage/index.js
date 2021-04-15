@@ -6,7 +6,7 @@ import { loadClassDatas } from "../../redux/classTable/actionCreator";
 import { loadSubjectDatas } from "../../redux/subjectTable/actionCreator";
 import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
 import { loadTaskDatas } from "../../redux/taskTable/actionCreator";
-
+import { filterTaskDatas } from "../../redux/taskTable/actionCreator";
 import {
   BiBookReader,
 } from "react-icons/bi";
@@ -25,7 +25,7 @@ function TaskBankPage() {
   const [subjectId, setSubjectId] = useState(null);
   const [checkedTrees, setCheckedTrees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  //const [filteredTasks, setFilteredTasks] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,37 +36,37 @@ function TaskBankPage() {
   }, []);
 
   useEffect(() => {
-    let filteredData=[];
-    taskTableData
-      .filter((t) => checkedTrees.includes(t.topic_id))
-      .map((t) => {
-          const { _id, questions, q_answer, title, description, ndx , topic_id, user_id, taskLevel_id} = t;
-          return filteredData.push({
-            checked:false,
-            isExpentTask:false,
-            isExpentAns:false,
-            _id,
-            questions,
-            title,
-            description,
-            q_answer,
-            ndx,
-            topic_id,
-            user_id,
-            taskLevel_id
-          });
-      });
-      setFilteredTasks(filteredData);
-      console.log("================>",filteredTasks);
+    // let filteredData=[];
+    // taskTableData
+    //   .filter((t) => checkedTrees.includes(t.topic_id))
+    //   .map((t) => {
+    //       const { _id, questions, q_answer, title, description, ndx , topic_id, user_id, taskLevel_id} = t;
+    //       return filteredData.push({
+    //         checked:false,
+    //         isExpentTask:false,
+    //         isExpentAns:false,
+    //         _id,
+    //         questions,
+    //         title,
+    //         description,
+    //         q_answer,
+    //         ndx,
+    //         topic_id,
+    //         user_id,
+    //         taskLevel_id
+    //       });
+    //   });
+      //setFilteredTasks(filteredData);
+      //console.log("================>",filteredTasks);
+     // dispatch(filterTaskDatas(checkedTrees));
   }, [checkedTrees]);
 
-
- 
 
   const subjectTableData = useSelector((state) => state.subjectTable.data);
   const classTableData = useSelector((state) => state.classTable.data);
   const topicTableData = useSelector((state) => state.topicTable.topics);
   const taskTableData = useSelector((state) => state.tasks.tasks);
+  const filteredTasks = useSelector((state) => state.tasks.filteredTasks);
 
   const OnChangeClass = (value) => {
     setClassId(value);

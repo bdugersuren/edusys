@@ -18,6 +18,7 @@ import HomeLayout from "./layouts/HomeLayout";
 const HomePage = lazy(() => import('./pages/HomePage'));
 const QuizPage = lazy(() => import('./pages/QuizPage'));
 const TaskBankPage = lazy(() => import('./pages/TaskBankPage'));
+const CreateTaskPage = lazy(() => import('./pages/CreateTaskPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 
@@ -29,6 +30,7 @@ const ProviderConfig = () => {
      
       <AppRoute path="/quiz" layout={MainLayout} component={QuizPage} />
       <AppRoute path="/taskbank"  layout={MainLayout}  component={TaskBankPage} />
+      <AppRoute path="/taskadd"  layout={MainLayout}  component={CreateTaskPage} />
       <AppRoute exact  path="/login"  layout={AuthLayout}  component={LoginPage} />
       <AppRoute exact  path="/register"  layout={AuthLayout}  component={RegisterPage} />
       <AppRoute exact path="/" layout={HomeLayout} component={HomePage} />

@@ -6,9 +6,9 @@ const { LOAD_TASK_BEGIN, LOAD_TASK_SUCCESS, LOAD_TASK_ERR,FILTER_TASK_DATAS } = 
 const initialStateFilter = {
   tasks: [],
   filteredTasks:[],
+  topicIds:[],
   taskTypeId:null,
   userId:null,
-  topicId:null,
   taskLevelId:null,
   loading: false,
   error: null,
@@ -29,10 +29,8 @@ const taskTableReducer = (state = initialStateFilter, action) => {
         loading: false,
       };
       case FILTER_TASK_DATAS:
-        console.log(data.subject_id, "<=======>", data.class_id);
         return {
           ...state,
-          tasks: (data.class_id&&data.subject_id)&&state.tasks.filter(cls=>cls.class_id===data.class_id).filter(sid=>sid.subject_id===data.subject_id),
           loading: false,
         };
     case LOAD_TASK_ERR:

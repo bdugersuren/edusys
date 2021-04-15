@@ -9,11 +9,8 @@ function HeaderComp() {
       <div className={styles.mainTopHeader}>      
         <MainMenuComp />       
       </div>
-<<<<<<< HEAD
       <div className="">gfdg</div>
-=======
       {/* <div className="">sdfdsfsdfds</div> */}
->>>>>>> db82afb27ddbb68455a6b56a7513f2f85ad40d55
     </div>
   );
 }

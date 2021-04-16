@@ -4,6 +4,8 @@ import { Checkbox } from "antd";
 import { Row, Col, Divider } from "antd";
 import styles from "./style.module.css";
 
+
+
 import {
   CgMaximize,
   CgMinimize,
@@ -17,6 +19,7 @@ import {
   BiArrowFromTop,
   BiSortUp,
 } from "react-icons/bi";
+
 
 const radioStyle = {
   display: "block",
@@ -37,12 +40,47 @@ function TaskItem({ task, setSelectedTasks }) {
 
   return (
     <Row>
-      <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-        <div className={styles.TaskQuestionHeader}>
+      <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+
+
+
+
+        <div className={styles.TaskQuestionHeader}  >
           <Checkbox onChange={onChange}></Checkbox>
-          <div>
-            <div>{task.title}</div>
+          
+          <div className={styles.TaskQuestionHeaderTitle}>{task.title}</div>      
+          
+        </div>
+      
+        </Col>
+
+        
+      <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+        <div className={styles.TaskQuestionHeader}>
+        <div>
+            <BiSortUp className={styles.TaskListIcons} />
           </div>
+          <div>
+            <BiArrowFromTop className={styles.TaskListIcons}/>
+          </div>
+          <div onClick={() => setIsAnswer(!isAnswer)}>
+            {isAnswer ? <CgMinimize className={styles.TaskListIcons}/> : <CgMaximize className={styles.TaskListIcons}/>}
+          </div>
+          <div onClick={() => setIsQuestions(!isQuestions)}>
+            {isQuestions ? (
+              <CgChevronUp className={styles.TaskListIcons} />
+            ) : (
+              <CgChevronDown className={styles.TaskListIcons} />
+            )}
+          </div>
+
+
+
+
+
+{/* 
+
+          
           <div>
             <BiSortUp />
           </div>
@@ -58,11 +96,19 @@ function TaskItem({ task, setSelectedTasks }) {
             ) : (
               <CgChevronDown />
             )}
-          </div>
+          </div> */}
         </div>
 
+        
+      </Col>
+
+
+
+
+
+
         {isQuestions && (
-          <div className="p-10 border-2">
+          <div >
             <div className="">{task.questions}</div>
 
             {isAnswer && (
@@ -77,48 +123,7 @@ function TaskItem({ task, setSelectedTasks }) {
             )}
           </div>
         )}
-      </Col>
-      <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-        <div className={styles.TaskQuestionHeader}>
-          <Checkbox onChange={onChange}></Checkbox>
-          <div>
-            <div>{task.title}</div>
-          </div>
-          <div>
-            <BiSortUp />
-          </div>
-          <div>
-            <BiArrowFromTop />
-          </div>
-          <div onClick={() => setIsAnswer(!isAnswer)}>
-            {isAnswer ? <CgMinimize /> : <CgMaximize />}
-          </div>
-          <div onClick={() => setIsQuestions(!isQuestions)}>
-            {isQuestions ? (
-              <CgChevronUp style={{ color: "red" }} />
-            ) : (
-              <CgChevronDown />
-            )}
-          </div>
-        </div>
-
-        {isQuestions && (
-          <div className="p-10 border-2">
-            <div className="">{task.questions}</div>
-
-            {isAnswer && (
-              <Radio.Group onChange={onChange} value={value}>
-                {task.q_answer.length > 0 &&
-                  task.q_answer.map((ans) => (
-                    <Radio key={ans._id} style={radioStyle} value={ans._id}>
-                      {ans.answer1}
-                    </Radio>
-                  ))}
-              </Radio.Group>
-            )}
-          </div>
-        )}
-      </Col>
+      
     </Row>
   );
 }

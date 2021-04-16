@@ -1,55 +1,125 @@
 .TaskBoxCenterTop {
-    width:100%;
-    height: 3rem;
-    border: 2px solid #000;
-    background: #f3f600;
+  width: 100%;
+  height: 3rem;
+  border: 2px solid #000;
+  background: #f3f600;
 }
-
 
 .TaskBoxCenter {
-    width: 100%;
-    border: 2px solid #000;
-    /* background: #1757ee; */
+  width: 100%;
+  /* border: 2px solid #000; */
+  /* background: #1757ee; */
 }
 .TaskFixedButton {
-margin: 0;
-padding: 0;
-
+  margin: 0;
+  padding: 0;
 }
-
-
 
 .TaskInfo1 {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: 16rem;
-    height: 2.5rem;  
-    background: #ff9f43;
-    border-radius: 10px;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 16rem;
+  height: 2.5rem;
+  background: #ff9f43;
+  border-radius: 10px;
 }
 .TaskInfo1 label {
-    font-size: 16px;
-    color: #fff;
+  font-size: 16px;
+  color: #fff;
 }
 
 .TaskInfo2 {
-    display: inline-block;
-    width: 16rem;
-    height: 2.5rem;
-    background: #f368e0;
-    border-radius: 10px;
+  display: inline-block;
+  width: 16rem;
+  height: 2.5rem;
+  background: #f368e0;
+  border-radius: 10px;
 }
 .TaskInfo2 label {
-    font-size: 16px;
-    color: #fff;
+  font-size: 16px;
+  color: #fff;
 }
 .TaskQuestionHeader {
-    display: flex;
-    color: #173b5d;
-    font-size: 16px;
-    font-weight: lighter;
-    background:#fae6b1;
-    height: 3rem;
+  display: flex;
+  color: #fff;
+  font-size: 16px;
+  font-weight: lighter;
+  box-shadow: 1px 1px 6px rgb(0 0 0 / 50%);
+  margin-bottom: 1rem;
+  background: rgb(64, 206, 182);
+  /* background: linear-gradient(
+    90deg,
+    rgba(1, 163, 164, 1) 0%,
+    rgba(8, 175, 185, 1) 0%,
+    rgba(23, 212, 224, 1) 0%,
+    rgba(18, 191, 214, 1) 28%,
+    rgba(28, 222, 227, 1) 100%,
+    rgba(5, 172, 173, 1) 100%,
+    rgba(1, 163, 164, 1) 100%
+  ); */
+  height: 2rem;
+  /* border: 1px solid #ddd; */
+  padding: 4px 0 0 10px;
+}
+
+.TaskQuestionHeaderTitle {
+  color: #000;
+  font-size: 16px;
+  font-weight: lighter;
+  margin-top: -3px;
+  padding: 0 0 0 15px;
+}
+
+.TaskQuestionHeader2 {
+  display: flex;
+  color: #173b5d;
+  font-size: 16px;
+  font-weight: lighter;
+  background: rgb(1, 163, 164);
+
+  height: 2rem;
+}
+.TaskListIcons {
+  color: #fff;
+  font-size: 1.75rem;
+  padding: 0.25rem;
+}
+
+.TaskQuestionHeader:hover {
+    box-shadow: 1px 1px 6px rgb(41 212 170 / 100%);
+    transition: all .3s;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.preview-image-box img:hover {
+    box-shadow: 1px 1px 6px rgb(0 0 0 / 30%);
     
+}
+.preview-image-box img.no-padding {
+    padding: 0;
+    background: 0 0;
+}
+.preview-image-box img {
+    max-width: 100%;
+    padding: 12px;
+    background: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all .3s;
 }

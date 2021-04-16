@@ -1,14 +1,13 @@
 .TaskBoxCenterTop {
   width: 100%;
   height: 3rem;
-  border: 2px solid #000;
-  background: #f3f600;
+ 
+
 }
 
 .TaskBoxCenter {
   width: 100%;
-  /* border: 2px solid #000; */
-  /* background: #1757ee; */
+
 }
 .TaskFixedButton {
   margin: 0;
@@ -64,10 +63,10 @@
 }
 
 .TaskQuestionHeaderTitle {
-  color: #000;
+  color: #fff;
   font-size: 16px;
-  font-weight: lighter;
-  margin-top: -3px;
+  font-weight: bolder;
+  margin-top: -2px;
   padding: 0 0 0 15px;
 }
 
@@ -92,34 +91,41 @@
     cursor: pointer;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.preview-image-box img:hover {
-    box-shadow: 1px 1px 6px rgb(0 0 0 / 30%);
-    
+.TaskQuestionsList {
+  padding-left: 15px;
+  font-weight: bolder;
+ font-size: 16px;
+ color: #01a3a4;
 }
-.preview-image-box img.no-padding {
-    padding: 0;
-    background: 0 0;
+.TaskAnswerList {
+  margin: 1rem 1rem 1rem 2rem;
+  padding: 0;
+  color: #01a3a4;
+  line-height: 10px;
+
 }
-.preview-image-box img {
-    max-width: 100%;
-    padding: 12px;
-    background: #fff;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all .3s;
+
+.TaskAnswerRadio {
+  color: #01a3a4; 
+  display: block;
+   height: 2rem;
+  lineHeight: 2rem;
+  /* height: 2rem; */
+
 }
+.radioStyle {
+  line-height: 10px;
+}
+.ant-radio-wrapper, .ant-radio {
+  line-height: 10px;
+  height: 10px;
+}
+
+
+
+
+
+
+
+
+

@@ -9,6 +9,11 @@ import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
 import { loadTaskDatas } from "../../redux/taskTable/actionCreator";
 import { Checkbox, Descriptions } from "antd";
 
+
+import { ReactSVG } from 'react-svg'
+import task from '../../assets/img/svg/task.svg';
+import text from '../../assets/img/svg/text.svg';
+
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
@@ -265,11 +270,13 @@ function TaskBankPage() {
             <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
               Бүгдийг сонгох
             </Checkbox>
+            
+            
             <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              Асуулт сонгох
+            <ReactSVG src={task}  style={{width:'15px'}}/>
             </Checkbox>
             <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              Хариулт сонгох
+            <ReactSVG src={text}  style={{width:'15px'}}/>
             </Checkbox>
             <div className={styles.TaskInfoButton}>
               <Button className={styles.TaskInfoButton} key="3">Даалгавар: {filteredTasks.length}</Button>

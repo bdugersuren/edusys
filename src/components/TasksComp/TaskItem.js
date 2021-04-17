@@ -3,6 +3,20 @@ import { Radio } from "antd";
 import { Checkbox } from "antd";
 import { Row, Col, Divider } from "antd";
 import styles from "./style.module.css";
+import { ReactSVG } from 'react-svg'
+import level1 from '../../assets/img/svg/level1.svg';
+import level2 from '../../assets/img/svg/level2.svg';
+import level3 from '../../assets/img/svg/level3.svg';
+import level4 from '../../assets/img/svg/level4.svg';
+import file from '../../assets/img/svg/file.svg';
+import compare from '../../assets/img/svg/compare.svg';
+import list from '../../assets/img/svg/list.svg';
+import task from '../../assets/img/svg/task.svg';
+import text from '../../assets/img/svg/text.svg';
+import trueFalse from '../../assets/img/svg/true&false.svg';
+
+
+
 import {
   CgMaximize,
   CgMinimize,
@@ -41,12 +55,12 @@ function TaskItem({ task, setSelectedTasks }) {
 
         <Col xs={3} sm={3} md={3} lg={3} xl={3}>
           <div style={{display: 'flex', height: '3.25rem', background:'none'}}>
-            <div>
-              
-            <BiSortUp className={styles.TaskListIcons} />
+            <div style={{width:'20%'}}>
+                <ReactSVG src={level1}  />            
             </div>
-            <div>
-              <BiArrowFromTop className={styles.TaskListIcons} />
+            <div style={{width:'20%'}}>
+              <ReactSVG src={list}  />  
+              
             </div>
             <div onClick={() => setIsAnswer(!isAnswer)}>
               {isAnswer ? (

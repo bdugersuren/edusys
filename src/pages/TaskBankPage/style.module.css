@@ -5,7 +5,7 @@
     color: #01A3A4;
 }
 .taskbank {
-  margin-top: 2px;
+  margin-top: 5px;
   /* background: #feca57; */
   height: 75vh;
 }
@@ -15,7 +15,7 @@
 }
 
 .RightFixed {
-    background: #fff;
+    
     height: 75vh;
 }
 .TaskBody {
@@ -25,7 +25,7 @@
 .button {
     margin: 0.25rem;
     border-radius: 0.5rem;
-    background: #01A3A4;
+    background: #ff9f43;
     border: none;
     color: #fff;
     width: 154px;
@@ -33,7 +33,7 @@
 }
 
 .TaskFixedIcons {
-    color: #01A3A4;
+    color: #01a3a4;
     font-size: 1.25rem;
     padding: 0 0.75rem 0 0.75rem ;
     cursor: pointer;
@@ -41,7 +41,7 @@
 
 .TaskRightFixedIcons {
     position: fixed;
-    color: #01A3A4;
+    color: #01a3a4;
     font-size: 1.5rem;
     padding: 5rem 0.25rem 0.5rem 0.25rem;
     cursor: pointer;
@@ -57,7 +57,7 @@
 }
 
 
-
+/* 
 .TaskInfo1 {  
     display: inline-block; 
     margin: 5px 5px 5px 5px;
@@ -83,7 +83,7 @@
 .TaskInfo2 label {
     font-size: 16px;
     color: #fff;
-}
+} */
 .TaskSelectItem {
     padding: 2px 1px 3px 5px;
 }
@@ -98,6 +98,19 @@
     margin: 0 0.25rem 0 0.5rem;
     color: #01A3A4;
     border-color: #29d4aa; 
-    --antd-wave-shadow-color: #29d4aa;
-    --scroll-bar:0;  
+    antd-wave-shadow-color: #29d4aa;
+    scroll-bar:0;  
+}
+
+.TaskBankPagination {
+    margin-top: 1rem;
+    color: #01a3a4;
+    align-item: center;
+    margin-left: 35%;
+}
+.TaskBankPagination:hover {
+    margin-top: 1rem;
+    color: #01a3a4;
+    align-item: center;
+    margin-left: 35%;
 }

@@ -26,7 +26,6 @@ function TasksComp({ tasks, setSelectedTasks }) {
   console.log("+++++++++++++++++++++>", tasks);
   return (
     <Row>
-     
         <div className={styles.TaskBoxCenter}>
           {/* <div className={styles.TaskBoxCenterTop}>           
               <Checkbox onChange={onChange}>Бүгдийг сонгох</Checkbox>
@@ -45,17 +44,18 @@ function TasksComp({ tasks, setSelectedTasks }) {
 
            
           </div> */}
-          {tasks.map((t) => {
+         <div >
+         {tasks.map((t) => {
             return (
               <TaskItem
                 key={t._id}
                 task={t}
                 setSelectedTasks={SelectedTaskValue}
-              />
+              />              
             );
-          })}
-        </div>
- 
+          })}  
+           </div>       
+        </div> 
     </Row>
   );
 }

@@ -334,6 +334,7 @@ function TaskBankPage() {
               setSelectedTasks={setSelectedTasks}
             />
           </div>
+         
         </Col>
         <Col xs={1} sm={1} md={1} lg={1} xl={1}>
           <div className={styles.TaskRightFixedIcons}>
@@ -408,8 +409,8 @@ function TaskBankPage() {
 
       <Row>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <div>
-            <Pagination
+          <div className={styles.TaskBankPagination}>
+            <Pagination 
               showQuickJumper
               defaultCurrent={1}
               defaultPageSize={2}

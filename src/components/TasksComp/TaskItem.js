@@ -3,7 +3,6 @@ import { Radio } from "antd";
 import { Checkbox } from "antd";
 import { Row, Col, Divider } from "antd";
 import styles from "./style.module.css";
-
 import {
   CgMaximize,
   CgMinimize,
@@ -18,12 +17,6 @@ import {
   BiSortUp,
 } from "react-icons/bi";
 
-const radioStyle = {
-  display: "block",
-  height: "50px",
-  lineHeight: "50px",
-};
-
 function TaskItem({ task, setSelectedTasks }) {
   const [isAnswer, setIsAnswer] = useState(true);
   const [isQuestions, setIsQuestions] = useState(false);
@@ -36,13 +29,43 @@ function TaskItem({ task, setSelectedTasks }) {
   }
 
   return (
-    <Row>
-      <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-        <div className={styles.TaskQuestionHeader}>
-          <Checkbox onChange={onChange}></Checkbox>
-          <div>
-            <div>{task.title}</div>
+    <div>
+      <Row>
+        <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+          <div className={styles.TaskQuestionHeader}>
+            <Checkbox onChange={onChange}></Checkbox>
+
+            <div className={styles.TaskQuestionHeaderTitle}>{task.title}</div>
           </div>
+        </Col>
+
+        <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+          <div style={{display: 'flex', height: '3.25rem', background:'none'}}>
+            <div>
+              
+            <BiSortUp className={styles.TaskListIcons} />
+            </div>
+            <div>
+              <BiArrowFromTop className={styles.TaskListIcons} />
+            </div>
+            <div onClick={() => setIsAnswer(!isAnswer)}>
+              {isAnswer ? (
+                <CgMinimize className={styles.TaskListIcons} />
+              ) : (
+                <CgMaximize className={styles.TaskListIcons} />
+              )}
+            </div>
+            <div onClick={() => setIsQuestions(!isQuestions)}>
+              {isQuestions ? (
+                <CgChevronUp className={styles.TaskListIcons} />
+              ) : (
+                <CgChevronDown className={styles.TaskListIcons} />
+              )}
+            </div>
+
+            {/* 
+
+          
           <div>
             <BiSortUp />
           </div>
@@ -58,68 +81,44 @@ function TaskItem({ task, setSelectedTasks }) {
             ) : (
               <CgChevronDown />
             )}
+          </div> */}
           </div>
-        </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          {isQuestions && (
+            <div>
+              <div className={styles.TaskQuestionsList} style={{borderBottom: '1px solid #ddd', paddingBottom: '1rem' }}>
+                {task.questions} 
+                {/* Монголчууд түүхийн явцдаа уйгуржин, дөрвөлжин бичиг, латин, кирилл зэрэг бичгүүдийг хэрэглэж ирсэн билээ. Энэ нь соёлын ямар шинжид хамаарах вэ? */}
+              Эх сурвалж. Луков - Данненбергийн иргэдийн санаачилсан ухуулах хуудас. Германд атомын аж үйлдвэрийн байгууламжийн эсрэг, ерөөс нутгаа хэт барилгажуулахын эсрэг шууд хүч хэрэглэхгүй суулт хийх, хэвтэж хаалт болох зэргээр эсэргүүцэл гардаг. Энэ бүхэн нь бүх хүний амьдралын төлөө учир цагдаагийн оролцоо хэрэггүй... Парламентын олонхи ч энэ хариуцлагыг бидэнд олгоогүй юм. Бидний энэ арга хэмжээ бол үндсэн хуулиар олгогдсон эсэргүүцэх эрхээ л ашиглаж байгаа хэрэг мөн. Дээрх эх сурвалж нь улс төрийн системийн аль бүрэлдэхүүн хэсгийн тухай өгүүлж байна вэ?
+              </div>
 
-        {isQuestions && (
-          <div className="p-10 border-2">
-            <div className="">{task.questions}</div>
-
-            {isAnswer && (
-              <Radio.Group onChange={onChange} value={value}>
-                {task.q_answer.length > 0 &&
-                  task.q_answer.map((ans) => (
-                    <Radio key={ans._id} style={radioStyle} value={ans._id}>
-                      {ans.answer1}
-                    </Radio>
-                  ))}
-              </Radio.Group>
-            )}
+              <div className={styles.TaskAnswerList}>
+                {isAnswer && (
+                  <Radio.Group onChange={onChange} value={value}>
+                    {task.q_answer.length > 0 &&
+                      task.q_answer.map((ans) => (
+                        <Radio
+                          className={styles.TaskAnswerRadio}
+                          key={ans._id}
+                          value={ans._id}
+                        >
+                          {ans.answer1}
+                        </Radio>
+                      ))}
+                  </Radio.Group>
+                )}
+              </div>
+            </div>
+          )}
+          <div style={{ background: "#f2f2f2", width: "100%", height: "0.5rem" }}>
+            <br />
           </div>
-        )}
-      </Col>
-      <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-        <div className={styles.TaskQuestionHeader}>
-          <Checkbox onChange={onChange}></Checkbox>
-          <div>
-            <div>{task.title}</div>
-          </div>
-          <div>
-            <BiSortUp />
-          </div>
-          <div>
-            <BiArrowFromTop />
-          </div>
-          <div onClick={() => setIsAnswer(!isAnswer)}>
-            {isAnswer ? <CgMinimize /> : <CgMaximize />}
-          </div>
-          <div onClick={() => setIsQuestions(!isQuestions)}>
-            {isQuestions ? (
-              <CgChevronUp style={{ color: "red" }} />
-            ) : (
-              <CgChevronDown />
-            )}
-          </div>
-        </div>
-
-        {isQuestions && (
-          <div className="p-10 border-2">
-            <div className="">{task.questions}</div>
-
-            {isAnswer && (
-              <Radio.Group onChange={onChange} value={value}>
-                {task.q_answer.length > 0 &&
-                  task.q_answer.map((ans) => (
-                    <Radio key={ans._id} style={radioStyle} value={ans._id}>
-                      {ans.answer1}
-                    </Radio>
-                  ))}
-              </Radio.Group>
-            )}
-          </div>
-        )}
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </div>
   );
 }
 

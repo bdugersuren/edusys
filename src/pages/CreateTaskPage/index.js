@@ -1,48 +1,88 @@
 import React, { useEffect, useState } from "react";
 import TasksComp from "../../components/TasksComp";
 import { useSelector, useDispatch } from "react-redux";
-
+import { Row, Col } from "antd";
+import TaskComp from "./../../components/TasksComp";
 import { loadClassDatas } from "../../redux/classTable/actionCreator";
 import { loadSubjectDatas } from "../../redux/subjectTable/actionCreator";
 import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
-import { loadTaskDatas, addFullTaskData } from "../../redux/taskTable/actionCreator";
-import { filterTaskDatas } from "../../redux/taskTable/actionCreator";
+import { loadTaskDatas } from "../../redux/taskTable/actionCreator";
+import { Checkbox, Descriptions } from "antd";
 
-import  CKEditor,  {CKEditorContext } from '@ckeditor/ckeditor5-react'
-//import InlineEditor from '@ckeditor/ckeditor5-editor-inline';
-//import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
-import  MathEditor  from 'ckeditor5-build-classic-mathtype'
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
-import MathJax from 'react-mathjax3'
+import { ReactSVG } from "react-svg";
+import task from "../../assets/img/svg/task.svg";
+import text from "../../assets/img/svg/text.svg";
 
+import TaskAddComp from "../../components/TaskAddComp";
 
 import {
-  BiBookReader,
-} from "react-icons/bi";
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  FileAddOutlined,
+  CheckCircleOutlined,
+  EyeOutlined,
+  CopyOutlined,
+  CloseOutlined,
+  ScissorOutlined,
+  PrinterOutlined,
+  PaperClipOutlined,
+  PictureOutlined,
+  PlaySquareOutlined,
+  ReloadOutlined,
+  SaveOutlined,
+  UndoOutlined,
+  RedoOutlined,
+  FormOutlined,
+  DeleteOutlined,
+  CheckSquareOutlined,
+  BarsOutlined,
+  CompressOutlined,
+  ExpandAltOutlined,
+  MoreOutlined,
+  FolderOpenOutlined,
+  ColumnHeightOutlined,
+  FullscreenOutlined,
+  FullscreenExitOutlined,
+} from "@ant-design/icons";
+import { BiBookReader } from "react-icons/bi";
+import { Button } from "antd";
 
 import { GrCheckmark, GrDown, GrEdit, GrTask } from "react-icons/gr";
 
-import { Select, Tree, Pagination, notification } from "antd";
+import { Select, Tree, Pagination } from "antd";
+import styles from "./style.module.css";
+import {
+  BiScan,
+  BiOutline,
+  BiVerticalCenter,
+  BiMoveVertical,
+} from "react-icons/bi";
 
 const { Option } = Select;
 
-const html = '$\\sum\\limits_{i = 0}^n {i^2 } = \\frac{n(n + 1)(2n + 1)}{6}$<br>Have a good day!';
+const children = [];
+for (let i = 10; i < 36; i++) {
+  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+}
 
-const ascii = 'U = 1/(R_(si) + sum_(i=1)^n(s_n/lambda_n) + R_(se))'
-const content = `This can be dynamic text (e.g. user-entered) text with ascii math embedded in $$ symbols like $$${ascii}$$`
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
 
+function TaskBankPage() {
+  const { Option } = Select;
 
+  const [isExpendAllTask, setIsExpendAllTask] = useState(false);
+  const [isExpendAllAns, setIsExpendAllAns] = useState(false);
 
-const openNotification = () => {
-  notification.open({
-    message: 'Даалгавар амжилттай хадгалагдлаа',
-    description:
-      'Тухайн даалгавар амжилттай хадгалагдлаа танд баяр хүргэе.',
-    icon: <GrCheckmark style={{ color: '#108ee9' }} />,
-  });
-};
+  const SelectedTaskValue = () => {
+    setSelectedTasks(["123", "456"]);
+    console.log("8888888888888888888888888888");
+  };
 
-function CreateTaskPage() {
+  function onChange(e) {
+    console.log(`checked = ${e.target.checked}`);
+  }
 
   //const [checked, setChecked] = useState([]);
   //const [expanded, setExpanded] = useState([]);
@@ -50,67 +90,7 @@ function CreateTaskPage() {
   const [subjectId, setSubjectId] = useState(null);
   const [checkedTrees, setCheckedTrees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
-  const [editor, setEditor] = useState(null);
-  //const [filteredTasks, setFilteredTasks] = useState([]);
-  const [task, setTask] = useState({
-    questions:"",
-    taskType_id:'606efc7cb5f4f304b423dabb',
-    user_id: "5fd77142b3c8ca42a0d2a579",
-    topic_id: "606da27de20d6052e0b776f9",
-    taskLevel_id: "606efacfb5f4f304b423dab4",
-    ndx: "",
-    title: "Энгийг бутархайн хуваарь нь ижил үед",
-    description: "Энгийн бутархайг хуваарь нь ялгаатай бол ижил болгох ёстой",
-    createdDate: "2021-04-13T08:12:53.837Z",
-    answers:[
-    {
-      answer1:"",
-      score:0
-    },
-    {
-      answer1:"",
-      score:0
-    }
-  ]
-  });
-  const handleTaskChange=(data)=>{
-    setTask({...task,
-      questions:data       
-    })
-  }
-
-const handleAddClick=()=>{
-  setTask({...task,
-          answers: [...task.answers, {answer1:"",score:0}]  
-    })
-}
-
-const handleRemoveClick=(index)=>{
-  //console.log(" ===========> Remove index ",index, "  <=========");
-  //const list = [...answers];
-  //list.splice(index, 1);
-  //setAnswers(list);
-  const lst=task.answers.filter((a,i)=>index!==i);
-  setTask({...task,
-              answers:lst});
-  console.log(lst);
-
-}
-const handleInputChange=(data, index)=>{
-  const list = [...task.answers];
-  list[index]['answer1'] = data;
-  setTask({...task,
-    answers:list});
-//console.log("**************> ",answers); 
-}
-
-
-
-const handleSaveTask=()=>{
-
-  dispatch(addFullTaskData(task));
-  openNotification();
-}
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -121,37 +101,45 @@ const handleSaveTask=()=>{
   }, []);
 
   useEffect(() => {
-    // let filteredData=[];
-    // taskTableData
-    //   .filter((t) => checkedTrees.includes(t.topic_id))
-    //   .map((t) => {
-    //       const { _id, questions, q_answer, title, description, ndx , topic_id, user_id, taskLevel_id} = t;
-    //       return filteredData.push({
-    //         checked:false,
-    //         isExpentTask:false,
-    //         isExpentAns:false,
-    //         _id,
-    //         questions,
-    //         title,
-    //         description,
-    //         q_answer,
-    //         ndx,
-    //         topic_id,
-    //         user_id,
-    //         taskLevel_id
-    //       });
-    //   });
-      //setFilteredTasks(filteredData);
-      //console.log("================>",filteredTasks);
-     // dispatch(filterTaskDatas(checkedTrees));
+    let filteredData = [];
+    taskTableData
+      .filter((t) => checkedTrees.includes(t.topic_id))
+      .map((t) => {
+        const {
+          _id,
+          questions,
+          q_answer,
+          title,
+          description,
+          ndx,
+          topic_id,
+          user_id,
+          taskLevel_id,
+        } = t;
+        return filteredData.push({
+          checked: false,
+          isExpentTask: false,
+          isExpentAns: false,
+          _id,
+          questions,
+          title,
+          description,
+          q_answer,
+          ndx,
+          topic_id,
+          user_id,
+          taskLevel_id,
+        });
+      });
+    setFilteredTasks(filteredData);
+    console.log("================>", filteredTasks);
   }, [checkedTrees]);
-
 
   const subjectTableData = useSelector((state) => state.subjectTable.data);
   const classTableData = useSelector((state) => state.classTable.data);
   const topicTableData = useSelector((state) => state.topicTable.topics);
   const taskTableData = useSelector((state) => state.tasks.tasks);
-  const filteredTasks = useSelector((state) => state.tasks.filteredTasks);
+  //const filteredTasks = useSelector((state) => state.tasks.filteredTasks);
 
   const OnChangeClass = (value) => {
     setClassId(value);
@@ -195,7 +183,6 @@ const handleSaveTask=()=>{
         });
       });
 
-  
   function onChange(value) {
     console.log(`selected ${value}`);
   }
@@ -210,160 +197,153 @@ const handleSaveTask=()=>{
   };
 
   return (
-    <div className="taskbank">
-      <div className="flex">
-        <label>Хичээл </label>
-        <Select
-          showSearch
-          style={{ width: 200 }}
-          placeholder="Хичээл сонгох"
-          //optionFilterProp="children"
-          onChange={OnChangeSubject}
-          //onFocus={onFocus}
-          //onBlur={onBlur}
-          //onSearch={onSearch}
-        >
-          {subjectTableData.map((item) => (
-            <Option key={item._id} value={item._id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
+    <>
+      <Row>
+        <Col xs={7} sm={7} md={7} lg={7} xl={7}>
+          <div className={styles.SelectFixed}>
+            <Select
+              showSearch
+              style={{ width: 168 }}
+              placeholder="Хичээл сонгох"
+              //optionFilterProp="children"
+              onChange={OnChangeSubject}
+              //onFocus={onFocus}
+              //onBlur={onBlur}
+              //onSearch={onSearch}
+            >
+              {subjectTableData.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+            &nbsp;
+            <Select
+              showSearch
+              style={{ width: 140 }}
+              placeholder="Анги сонгох"
+              onChange={OnChangeClass}
+            >
+              {classTableData.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        </Col>
+        <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+          <div className={styles.TaskFixedIcons}>
+            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
+            <ArrowRightOutlined className={styles.TaskFixedIcons} />
+            <FormOutlined className={styles.TaskFixedIcons} />
+            <CopyOutlined className={styles.TaskFixedIcons} />
+            <DeleteOutlined className={styles.TaskFixedIcons} />
+            <PaperClipOutlined className={styles.TaskFixedIcons} />
+            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <CheckCircleOutlined className={styles.TaskFixedIcons} />
+            <EyeOutlined className={styles.TaskFixedIcons} />
+          </div>
+        </Col>
+        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+          <div>
+            <Button className={styles.button}>Даалгавар үүсгэх</Button>
+            <Button className={styles.button}>Тест үүсгэх</Button>
+          </div>
+        </Col>
+      </Row>
 
-        <label>Анги</label>
+      <Row>
+        <Col xs={5} sm={5} md={5} lg={5} xl={5}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Бүлгээр сонгох"
+            defaultValue={["a10", "c12"]}
+            onChange={handleChange}
+          >
+            {children}
+          </Select>
+        </Col>
+        <Col xs={19} sm={19} md={19} lg={19} xl={19}>
+          <div className={styles.TaskSelectItem}>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              Бүгдийг сонгох
+            </Checkbox>
 
-        <Select
-          showSearch
-          style={{ width: 200 }}
-          placeholder="Хичээл сонгох"
-          onChange={OnChangeClass}
-        >
-          {classTableData.map((item) => (
-            <Option key={item._id} value={item._id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
-        <label className="border-2 ">
-          Нийт даалгавар {filteredTasks.length}
-        </label>
-        <label>Сонгогдсон даалгавар {selectedTasks.length} </label>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              <ReactSVG src={task} style={{ width: "15px" }} />
+            </Checkbox>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              <ReactSVG src={text} style={{ width: "15px" }} />
+            </Checkbox>
+            <div className={styles.TaskInfoButton}>
+              <Button className={styles.TaskInfoButton} key="3">
+                Даалгавар: {filteredTasks.length}
+              </Button>
+              <Button className={styles.TaskInfoButton} key="2">
+                Сонгогдсон: {selectedTasks.length}{" "}
+              </Button>
+              <Button className={styles.TaskInfoButton} key="1">
+                Авах оноо: 40{" "}
+              </Button>
+              <Button className={styles.TaskInfoButton} key="4">
+                Шалгалт авах огноо: 2021-04-22 16:40{" "}
+              </Button>
+            </div>
+          </div>
+        </Col>
+        <Col xs={0} sm={0} md={0} lg={0} xl={0}></Col>
+      </Row>
 
-        <button onClick={handleSaveTask}>Даалгавар үүсгэх</button>
-        <button>Тест үүсгэх</button>
-        <button>Засах</button>
-        <button>Хувилах</button>
+      <Row className={styles.taskbank}>
+        <Col xs={5} sm={5} md={5} lg={5} xl={5}>
+          <div className={styles.taskTree}>
+            <Tree
+              checkable
+              onSelect={onSelect}
+              onCheck={onCheck}
+              treeData={topicNodes}
+            />
+          </div>
+        </Col>
+        <Col xs={17} sm={18} md={18} lg={18} xl={18}>
+          <div>
+            <TaskAddComp/>
+          </div>
+        </Col>
+        <Col xs={1} sm={1} md={1} lg={1} xl={1}>
+          <div className={styles.TaskRightFixedIcons}>
+            <FormOutlined className={styles.TaskFixedIcons} />
+            <UndoOutlined className={styles.TaskFixedIcons} />
+            <RedoOutlined className={styles.TaskFixedIcons} />
+            <CopyOutlined className={styles.TaskFixedIcons} />
+            <ScissorOutlined className={styles.TaskFixedIcons} />
+            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <PaperClipOutlined className={styles.TaskFixedIcons} />
+            <PictureOutlined className={styles.TaskFixedIcons} />
+            <PlaySquareOutlined className={styles.TaskFixedIcons} />
+            <SaveOutlined className={styles.TaskFixedIcons} />
+          </div>
+        </Col>
+      </Row>
 
-      </div>
-      <div className="flex flex-row">
-        <div className="flex-5">
-          <Tree
-            checkable
-            onSelect={onSelect}
-            onCheck={onCheck}
-            treeData={topicNodes}
-          />
-        </div>
-        <div className="flex-auto">
-        <div>Асуулт оруулах талбар</div>
-        <CKEditor
-                        data={task.questions}
-                        editor={ MathEditor }
-                        onInit={ editor => {
-                            console.log( 'Editor is ready to use!', editor );
-                        } }
-                        onChange={ ( event, editor ) => {
-                            const data = editor.getData();
-                            setEditor(data);
-                            console.log( { event, editor, data } );
-                            handleTaskChange(data); 
-                        } }
-                        // onBlur={ ( event, editor ) => {
-                        //     console.log( 'Blur.', editor );
-                        // } }
-                        // onFocus={ ( event, editor ) => {
-                        //     console.log( 'Focus.', editor );
-                        // } }
-                         />
-
-{
-  task.answers.map((x,i)=>{
-    return(
-    <div key={i}>
-      <div>
-        <div>Хариулт-{i}</div>
-        <div> { task.answers.length!==1&&<button onClick={() => handleRemoveClick(i)}>Remore</button> }</div>
-      </div>
-            <CKEditor
-                        data={x.answer1}
-                        editor={ MathEditor }
-                        // onInit={ editor => {
-                        //     console.log( 'Editor is ready to use!', editor );
-                        // } }
-                        onChange={ ( event, editor ) => {
-                            const data = editor.getData();
-                            // setEditor(data);
-                            // console.log( { event, editor, data });
-                            handleInputChange(data, i); 
-                        } } />
-    </div>)
-  })
-}
-
-<div className="text-center"> {task.answers.length<=10&&<button onClick={handleAddClick}>Нэмэх</button>} </div>
-
-        </div>
-        
-        <div className="flex-2">
-          <BiBookReader />
-          <GrCheckmark />
-          <GrDown /> <GrEdit /> <GrTask />
-        </div>
-        
-      </div>
-      <div>
-          
-     
-    <div>
-      <div>Json files</div>
-    {JSON.stringify(task)}
-    </div>
-     
-     <div>{ ReactHtmlParser(content) }</div>;
-          
-     { ReactHtmlParser(content) }
-         </div>
-
-         <MathJax.Context
-            input='tex'
-            onLoad={ () => console.log("Loaded MathJax script!") }
-            onError={ (MathJax, error) => {
-                console.warn(error);
-                console.log("Encountered a MathJax error, re-attempting a typeset!");
-                MathJax.Hub.Queue(
-                  MathJax.Hub.Typeset()
-                );
-            } }
-            script="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js"
-            options={ {
-                messageStyle: 'none',
-                extensions: ['tex2jax.js'],
-                jax: ['input/TeX', 'output/HTML-CSS'],
-                tex2jax: {
-                    inlineMath: [['$', '$'], ['\\(', '\\)']],
-                    displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                    processEscapes: true,
-                },
-                TeX: {
-                    extensions: ['AMSmath.js', 'AMSsymbols.js', 'noErrors.js', 'noUndefined.js']
-                }
-            } }
-        >
-            <MathJax.Html html={ html } />
-        </MathJax.Context>
-    </div>
+      <Row>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <div className={styles.TaskBankPagination}>
+            <Pagination
+              showQuickJumper
+              defaultCurrent={1}
+              defaultPageSize={2}
+              total={filteredTasks.length}
+              onChange={onChange}
+            />
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 }
 
-
-export default CreateTaskPage
+export default TaskBankPage;

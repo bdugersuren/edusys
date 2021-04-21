@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { changeCheckedTasks} from "../../redux/taskTable/actionCreator";
+
 import { Radio } from "antd";
 import { Checkbox } from "antd";
-import { Row, Col, Divider } from "antd";
+import { Row, Col, Divider,Modal, Button } from "antd";
 import styles from "./style.module.css";
+//#region  Icons
 import { ReactSVG } from 'react-svg'
 import level1 from '../../assets/img/svg/level1.svg';
 import level2 from '../../assets/img/svg/level2.svg';
@@ -31,36 +35,72 @@ import {
   BiSortUp,
 } from "react-icons/bi";
 
-function TaskItem({ task, setSelectedTasks }) {
-  const [isAnswer, setIsAnswer] = useState(true);
-  const [isQuestions, setIsQuestions] = useState(false);
+
+import {
+  EyeOutlined
+} from "@ant-design/icons";
+import IconComp from "../IconComp";
+//#endregion
+
+
+
+function TaskItem({ task }) {
+  const dispatch = useDispatch();
+
+  const [isAnswer, setIsAnswer] = useState(false);
+  const [isQuestions, setIsQuestions] = useState(task.isExpendAllTask);
   const [isChoose, setIsChoose] = useState(false);
   const [value, setValue] = useState(null);
 
+  const checkedTaskIds = useSelector((state) => state.tasks.checkedTaskIds);
+
+
   function onChange(e) {
-    console.log(`checked = ${e.target.checked}`);
-    setValue(e.target.value);
+    console.log(`checked = ${e.target.checked}    id=>  ${checkedTaskIds}`);
+    //setValue(e.target.value);
+    dispatch(changeCheckedTasks({id:task._id, isChecked:e.target.checked}));
   }
 
+  useEffect(() => {
+    setIsAnswer(task.isExpentAns);
+    setIsQuestions(task.isExpentTask);
+  }, [task]);
+
+  console.log(task);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
     <div>
       <Row>
         <Col xs={21} sm={21} md={21} lg={21} xl={21}>
           <div className={styles.TaskQuestionHeader}>
-            <Checkbox onChange={onChange}></Checkbox>
+            <Checkbox onChange={onChange} checked={task.checked}></Checkbox>
 
             <div className={styles.TaskQuestionHeaderTitle}>{task.title}</div>
+            <div className="flex-auto"></div>
+            <EyeOutlined className={styles.TaskFixedIcons}  onClick={showModal}/> 
           </div>
         </Col>
 
         <Col xs={3} sm={3} md={3} lg={3} xl={3}>
           <div style={{display: 'flex', height: '3.25rem', background:'none'}}>
-            <div style={{width:'20%'}}>
-                <ReactSVG src={level1}  />            
+            <div style={{width:'15%'}} className="p-1">
+              <IconComp iconCode={task.taskLevel_id.code} />           
             </div>
-            <div style={{width:'20%'}}>
-              <ReactSVG src={list}  />  
-              
+            <div style={{width:'15%'}} className="p-1">
+               <IconComp iconCode={task.taskType_id.code} />     
             </div>
             <div onClick={() => setIsAnswer(!isAnswer)}>
               {isAnswer ? (
@@ -76,26 +116,6 @@ function TaskItem({ task, setSelectedTasks }) {
                 <CgChevronDown className={styles.TaskListIcons} />
               )}
             </div>
-
-            {/* 
-
-          
-          <div>
-            <BiSortUp />
-          </div>
-          <div>
-            <BiArrowFromTop />
-          </div>
-          <div onClick={() => setIsAnswer(!isAnswer)}>
-            {isAnswer ? <CgMinimize /> : <CgMaximize />}
-          </div>
-          <div onClick={() => setIsQuestions(!isQuestions)}>
-            {isQuestions ? (
-              <CgChevronUp style={{ color: "red" }} />
-            ) : (
-              <CgChevronDown />
-            )}
-          </div> */}
           </div>
         </Col>
       </Row>
@@ -132,6 +152,30 @@ function TaskItem({ task, setSelectedTasks }) {
           </div>
         </Col>
       </Row>
+    
+      <Modal title="Даалгаврын харагдах байдал" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} width={1000}>
+        <p> { task.questions}</p>
+        <hr />
+
+        <div className={styles.TaskAnswerList}>
+                
+                  <Radio.Group onChange={onChange} value={value}>
+                    {task.q_answer.length > 0 &&
+                      task.q_answer.map((ans) => (
+                        <Radio
+                          className={styles.TaskAnswerRadio}
+                          key={ans._id}
+                          value={ans._id}
+                        >
+                          {ans.answer1}
+                        </Radio>
+                      ))}
+                  </Radio.Group>
+              
+              </div>
+            
+      </Modal>
+    
     </div>
   );
 }

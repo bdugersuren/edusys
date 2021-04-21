@@ -1,61 +1,128 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  loadTaskDatas,
+  changeSelSubjectId,
+  changeSelClassId,
+  changeTopicIds,
+} from "../../redux/taskTable/actionCreator";
+
 import TaskItem from "./TaskItem";
-import { Checkbox } from "antd";
+
 import styles from "./style.module.css";
-import { Row, Col } from "antd";
+
+import { Row, Col, Tooltip, Checkbox } from "antd";
 
 import {
   BiScan,
   BiOutline,
   BiVerticalCenter,
   BiMoveVertical,
+  BiCheckboxChecked,
+  BiCheckboxSquare,
+  BiCheckbox,
 } from "react-icons/bi";
 
-function TasksComp({ tasks, setSelectedTasks }) {
+function TasksComp() {
+  const dispatch = useDispatch();
+
+  const taskTableData = useSelector((state) => state.tasks.list);
+  const checkedTopicIds = useSelector((state) => state.tasks.checkedTopicIds);
+  const filteredTasksIds = useSelector((state) => state.tasks.filteredTasks);
+
   const [isExpendAllTask, setIsExpendAllTask] = useState(false);
   const [isExpendAllAns, setIsExpendAllAns] = useState(false);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [isAllSelected, setIsAllSelected] = useState(0);
 
-  const SelectedTaskValue = () => {
-    setSelectedTasks(["123", "456"]);
-    console.log("8888888888888888888888888888");
+  const setIsSelectedTask = ({ id }) => {
+    //setSelectedTasks(["123", "456"]);
+    console.log("8888888888888888888888888888", id);
   };
 
   function onChange(e) {
     console.log(`checked = ${e.target.checked}`);
   }
-  console.log("+++++++++++++++++++++>", tasks);
+
+  useEffect(() => {
+    dispatch(loadTaskDatas());
+  }, []);
+
+  useEffect(() => {
+    let filteredData = [];
+    taskTableData
+      .filter((t) => checkedTopicIds.includes(t.topic_id))
+      .map((t) => {
+        const {
+          _id,
+          questions,
+          q_answer,
+          title,
+          description,
+          ndx,
+          topic_id,
+          user_id,
+          taskLevel_id,
+          taskType_id,
+        } = t;
+        return filteredData.push({
+          checked: filteredTasksIds.includes(_id),
+          isExpentTask: isExpendAllTask,
+          isExpentAns: isExpendAllAns,
+          _id,
+          questions,
+          title,
+          description,
+          q_answer,
+          ndx,
+          topic_id,
+          user_id,
+          taskLevel_id,
+          taskType_id
+        });
+      });
+    setFilteredTasks(filteredData);
+    console.log("================>", filteredTasksIds);
+  }, [checkedTopicIds, filteredTasksIds, isExpendAllTask, isExpendAllAns]);
+
   return (
     <Row>
-        <div className={styles.TaskBoxCenter}>
-          {/* <div className={styles.TaskBoxCenterTop}>           
-              <Checkbox onChange={onChange}>Бүгдийг сонгох</Checkbox>
-            <button
-              className={styles.TaskFixedButton}
-              onClick={() => setIsExpendAllTask(!isExpendAllTask)}
-            >
-              {tasks.checked ? <BiVerticalCenter /> : <BiMoveVertical />}
-              Бүх асуулт2
-            </button>
+      <div className={styles.TaskBoxCenter}>
+        <div className="flex h-10 items-center text-xl">
+          <div
+            onClick={() => setIsAllSelected(!isAllSelected)}
+            className="flex items-center cursor-pointer "
+          >
+            {isAllSelected === 0 ? <BiCheckbox /> : <BiCheckboxChecked />}
+            <div>Бүгдийг сонгох</div>
+          </div>
+          <div className="mx-3 px-3 bg-green-200">
+            {" "}
+            Сонгогдсон {filteredTasksIds.length}/{filteredTasks.length}
+          </div>
+          <div className="flex-auto"></div>
 
-            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
-              {isExpendAllAns ? <BiScan /> : <BiOutline />}
-              Бүх хариулт
-            </button>
+          <div
+            onClick={() => setIsExpendAllAns(!isExpendAllAns)}
+            className="cursor-pointer"
+          >
+            {isExpendAllAns ? <BiScan /> : <BiOutline />}
+          </div>
+          <div
+            className="cursor-pointer mx-6"
+            onClick={() => setIsExpendAllTask(!isExpendAllTask)}
+          >
+            {isExpendAllTask ? <BiVerticalCenter /> : <BiMoveVertical />}
+          </div>
+        </div>
 
-           
-          </div> */}
-         <div >
-         {tasks.map((t) => {
-            return (
-              <TaskItem
-                key={t._id}
-                task={t}
-                setSelectedTasks={SelectedTaskValue}
-              />              
-            );
-          })}  
-           </div>       
-        </div> 
+        <div>
+          {filteredTasks.map((t) => {
+            return <TaskItem key={t._id} task={t} />;
+          })}
+        </div>
+      </div>
     </Row>
   );
 }

@@ -147,12 +147,15 @@ const handleSaveTask=()=>{
   }, [checkedTrees]);
 
 
-  const subjectTableData = useSelector((state) => state.subjectTable.data);
-  const classTableData = useSelector((state) => state.classTable.data);
-  const topicTableData = useSelector((state) => state.topicTable.topics);
-  const taskTableData = useSelector((state) => state.tasks.tasks);
+  const subjectTableData = useSelector((state) => state.subjectTable.list);
+  const classTableData = useSelector((state) => state.classTable.list);
+  const topicTableData = useSelector((state) => state.topicTable.list);
+  const taskTableData = useSelector((state) => state.tasks.list);
   const filteredTasks = useSelector((state) => state.tasks.filteredTasks);
+  const selSubjId = useSelector((state) => state.tasks.selectedSubjId);
+  const selClssId = useSelector((state) => state.tasks.selectedClassId);
 
+  
   const OnChangeClass = (value) => {
     setClassId(value);
   };
@@ -185,13 +188,14 @@ const handleSaveTask=()=>{
 
   topicTableData &&
     topicTableData
-      .filter((c) => c.class_id._id === classId)
-      .filter((s) => s.subject_id._id === subjectId)
+      .filter((c) => c.class_id._id === selClssId)
+      .filter((s) => s.subject_id._id === selSubjId)
       .map((td) => {
-        const { _id, name } = td;
+        const { key, title, children } = td;
         return topicNodes.push({
-          key: _id,
-          title: name,
+          key,
+          title,
+          children,
         });
       });
 

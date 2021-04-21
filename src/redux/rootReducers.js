@@ -13,7 +13,7 @@ import {taskTableReducer} from './taskTable/reducers';
 const persistConfig = {
   key:'root',
   storage,
-  whitelist: ['auth','roleMenu', 'i18n']
+  whitelist: ['auth','roleMenu', 'i18n', 'tasks']
 }
 
 const rootReducers = combineReducers({

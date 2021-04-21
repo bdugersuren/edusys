@@ -6,8 +6,17 @@ import TaskComp from "./../../components/TasksComp";
 import { loadClassDatas } from "../../redux/classTable/actionCreator";
 import { loadSubjectDatas } from "../../redux/subjectTable/actionCreator";
 import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
-import { loadTaskDatas } from "../../redux/taskTable/actionCreator";
-import { Checkbox, Descriptions } from "antd";
+import {
+  loadTaskDatas,
+  changeSelSubjectId,
+  changeSelClassId,
+  changeTopicIds,
+} from "../../redux/taskTable/actionCreator";
+import { Checkbox, Descriptions, Badge } from "antd";
+
+import { ReactSVG } from "react-svg";
+import task from "../../assets/img/svg/task.svg";
+import text from "../../assets/img/svg/text.svg";
 
 import {
   ArrowLeftOutlined,
@@ -42,15 +51,17 @@ import { BiBookReader } from "react-icons/bi";
 import { Button } from "antd";
 
 import { GrCheckmark, GrDown, GrEdit, GrTask } from "react-icons/gr";
-
-import { Select, Tree, Pagination } from "antd";
-import styles from "./style.module.css";
 import {
   BiScan,
   BiOutline,
   BiVerticalCenter,
   BiMoveVertical,
 } from "react-icons/bi";
+import { icons } from "antd/lib/image/PreviewGroup";
+
+import { Select, Tree, Pagination, Tooltip } from "antd";
+import styles from "./style.module.css";
+import IconComp from "../../components/IconComp";
 
 const { Option } = Select;
 
@@ -65,9 +76,6 @@ function handleChange(value) {
 
 function TaskBankPage() {
   const { Option } = Select;
-
-  const [isExpendAllTask, setIsExpendAllTask] = useState(false);
-  const [isExpendAllAns, setIsExpendAllAns] = useState(false);
 
   const SelectedTaskValue = () => {
     setSelectedTasks(["123", "456"]);
@@ -84,7 +92,6 @@ function TaskBankPage() {
   const [subjectId, setSubjectId] = useState(null);
   const [checkedTrees, setCheckedTrees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -92,55 +99,29 @@ function TaskBankPage() {
     dispatch(loadClassDatas());
     dispatch(loadSubjectDatas());
     dispatch(loadTaskDatas());
+
+    setSubjectId(selSubjId);
   }, []);
 
-  useEffect(() => {
-    let filteredData = [];
-    taskTableData
-      .filter((t) => checkedTrees.includes(t.topic_id))
-      .map((t) => {
-        const {
-          _id,
-          questions,
-          q_answer,
-          title,
-          description,
-          ndx,
-          topic_id,
-          user_id,
-          taskLevel_id,
-        } = t;
-        return filteredData.push({
-          checked: false,
-          isExpentTask: false,
-          isExpentAns: false,
-          _id,
-          questions,
-          title,
-          description,
-          q_answer,
-          ndx,
-          topic_id,
-          user_id,
-          taskLevel_id,
-        });
-      });
-    setFilteredTasks(filteredData);
-    console.log("================>", filteredTasks);
-  }, [checkedTrees]);
-
-  const subjectTableData = useSelector((state) => state.subjectTable.data);
-  const classTableData = useSelector((state) => state.classTable.data);
-  const topicTableData = useSelector((state) => state.topicTable.topics);
-  const taskTableData = useSelector((state) => state.tasks.tasks);
-  //const filteredTasks = useSelector((state) => state.tasks.filteredTasks);
+  const subjectTableData = useSelector((state) => state.subjectTable.list);
+  const classTableData = useSelector((state) => state.classTable.list);
+  const topicTableData = useSelector((state) => state.topicTable.list);
+  const taskTableData = useSelector((state) => state.tasks.list);
+  const selSubjId = useSelector((state) => state.tasks.selectedSubjId);
+  const selClssId = useSelector((state) => state.tasks.selectedClassId);
+  const checkedTopicIds = useSelector((state) => state.tasks.checkedTopicIds);
+  const filteredTasksIds = useSelector((state) => state.tasks.filteredTasks);
 
   const OnChangeClass = (value) => {
     setClassId(value);
+    dispatch(changeSelClassId(value));
   };
 
   const OnChangeSubject = (value) => {
-    setSubjectId(value);
+    //changeSelSubjectId
+    dispatch(changeSelSubjectId(value));
+    //setSubjectId(selSubjId);
+    console.log("================Select value===============> ", value);
   };
 
   const classOptions = [];
@@ -167,15 +148,17 @@ function TaskBankPage() {
 
   topicTableData &&
     topicTableData
-      .filter((c) => c.class_id._id === classId)
-      .filter((s) => s.subject_id._id === subjectId)
+      .filter((c) => c.class_id._id === selClssId)
+      .filter((s) => s.subject_id._id === selSubjId)
       .map((td) => {
-        const { _id, name } = td;
+        const { key, title, children } = td;
         return topicNodes.push({
-          key: _id,
-          title: name,
+          key,
+          title,
+          children,
         });
       });
+  console.log(topicNodes, "<----------------------");
 
   function onChange(value) {
     console.log(`selected ${value}`);
@@ -185,7 +168,8 @@ function TaskBankPage() {
     console.log("selected", selectedKeys, info);
   };
 
-  const onCheck = (checkedKeys, info) => {
+  const onCheckedTopicIds = (checkedKeys, info) => {
+    dispatch(changeTopicIds(checkedKeys));
     setCheckedTrees(checkedKeys);
     console.log("onCheck", checkedKeys, info, checkedTrees);
   };
@@ -197,6 +181,7 @@ function TaskBankPage() {
           <div className={styles.SelectFixed}>
             <Select
               showSearch
+              defaultValue={selSubjId}
               style={{ width: 168 }}
               placeholder="Хичээл сонгох"
               //optionFilterProp="children"
@@ -214,6 +199,7 @@ function TaskBankPage() {
             &nbsp;
             <Select
               showSearch
+              defaultValue={selClssId}
               style={{ width: 140 }}
               placeholder="Анги сонгох"
               onChange={OnChangeClass}
@@ -261,56 +247,48 @@ function TaskBankPage() {
           </Select>
         </Col>
         <Col xs={19} sm={19} md={19} lg={19} xl={19}>
-          <div className={styles.TaskSelectItem}>
+          <div className={styles.TaskSelectItem} className="flex">
             <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
               Бүгдийг сонгох
             </Checkbox>
-            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              Асуулт сонгох
-            </Checkbox>
-            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              Хариулт сонгох
-            </Checkbox>
-            <div className={styles.TaskInfoButton}>
-              <Button className={styles.TaskInfoButton} key="3">Даалгавар: {filteredTasks.length}</Button>
-              <Button className={styles.TaskInfoButton} key="2">Сонгогдсон: {selectedTasks.length} </Button>
-              <Button className={styles.TaskInfoButton} key="1">Авах оноо: 40 </Button>
-              <Button className={styles.TaskInfoButton} key="4">Шалгалт авах огноо: 2021-04-22 16:40 </Button>
+
+            <div className="mx-5 px-1">
+              <Tooltip color="#FF0000" placement="bottom" title="Нийт тестээс сонгогдсон">
+                <Badge
+                  count={`${filteredTasksIds.length}/${checkedTopicIds.length}`}
+                  offset={[10, 0]}
+                >
+                  <IconComp
+                    iconCode="sigma"
+                    style={{ color: "red" }}
+                    className={styles.TaskFixedIcons}
+                  />
+                </Badge>
+              </Tooltip>
             </div>
 
-        
-
-            {/* 
-            <CheckSquareOutlined className={styles.TaskListIcons} />
-            <BarsOutlined className={styles.TaskListIcons} />
-            <CompressOutlined className={styles.TaskListIcons} />
-            <ExpandAltOutlined className={styles.TaskListIcons} />
-            <MoreOutlined className={styles.TaskListIcons} />
-            <FolderOpenOutlined className={styles.TaskListIcons} />
-            <ColumnHeightOutlined className={styles.TaskListIcons} />\
-            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
-              {isExpendAllAns ? (
-                <CheckSquareOutlined className={styles.TaskListIcons} />
-              ) : (
-                <FullscreenExitOutlined className={styles.TaskListIcons} />
-              )}
-            </button>
             
-            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
-              {isExpendAllAns ? (
-                <FullscreenOutlined className={styles.TaskListIcons} />
-              ) : (
-                <FullscreenExitOutlined className={styles.TaskListIcons} />
-              )}
-              Бүх хариулт
-            </button>
-            <button onClick={() => setIsExpendAllAns(!isExpendAllAns)}>
-              {isExpendAllAns ? (
-                <FullscreenOutlined className={styles.TaskListIcons} />
-              ) : (
-                <FullscreenExitOutlined className={styles.TaskListIcons} />
-              )}*/}
-         
+
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              <ReactSVG src={task} style={{ width: "15px" }} />
+            </Checkbox>
+            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
+              <ReactSVG src={text} style={{ width: "15px" }} />
+            </Checkbox>
+            <div className={styles.TaskInfoButton}>
+              <Button className={styles.TaskInfoButton} key="3">
+                Даалгавар: 31 {/*{filteredTasks.length} */}
+              </Button>
+              <Button className={styles.TaskInfoButton} key="2">
+                Сонгогдсон: 2{/* {selectedTasks.length} */}
+              </Button>
+              <Button className={styles.TaskInfoButton} key="1">
+                Авах оноо: 40{" "}
+              </Button>
+              <Button className={styles.TaskInfoButton} key="4">
+                Шалгалт авах огноо: 2021-04-22 16:40{" "}
+              </Button>
+            </div>
           </div>
         </Col>
         <Col xs={0} sm={0} md={0} lg={0} xl={0}></Col>
@@ -321,18 +299,16 @@ function TaskBankPage() {
           <div className={styles.taskTree}>
             <Tree
               checkable
+              checkedKeys={checkedTopicIds}
               onSelect={onSelect}
-              onCheck={onCheck}
+              onCheck={onCheckedTopicIds}
               treeData={topicNodes}
             />
           </div>
         </Col>
         <Col xs={17} sm={18} md={18} lg={18} xl={18}>
           <div className={styles.TaskBody}>
-            <TasksComp
-              tasks={filteredTasks}
-              setSelectedTasks={setSelectedTasks}
-            />
+            <TasksComp />
           </div>
         </Col>
         <Col xs={1} sm={1} md={1} lg={1} xl={1}>
@@ -340,244 +316,79 @@ function TaskBankPage() {
             <FormOutlined className={styles.TaskFixedIcons} />
             <UndoOutlined className={styles.TaskFixedIcons} />
             <RedoOutlined className={styles.TaskFixedIcons} />
-            <CopyOutlined className={styles.TaskFixedIcons} />
+
             <ScissorOutlined className={styles.TaskFixedIcons} />
             <PrinterOutlined className={styles.TaskFixedIcons} />
             <PaperClipOutlined className={styles.TaskFixedIcons} />
             <PictureOutlined className={styles.TaskFixedIcons} />
             <PlaySquareOutlined className={styles.TaskFixedIcons} />
-            <SaveOutlined className={styles.TaskFixedIcons} />
+            {filteredTasksIds.length === 1 && (
+              <>
+                <Tooltip
+                  color="#FF0000"
+                  placement="left"
+                  title="Харах"
+                  className="hover: text-5xl hover:bg-gray-200 w-auto"
+                >
+                  <EyeOutlined className={styles.TaskFixedIcons} />
+                </Tooltip>
+
+                <Tooltip
+                  color="#FF0000"
+                  placement="left"
+                  title="Харах"
+                  className="hover: text-5xl hover:bg-gray-200 w-auto"
+                >
+                  <CopyOutlined className={styles.TaskFixedIcons} />
+                </Tooltip>
+              </>
+            )}
+
+            {filteredTasksIds.length > 0 && (
+              <Tooltip
+                color="#FF0000"
+                placement="left"
+                title="Устгах"
+                className="hover: text-5xl hover:bg-gray-200  w-auto"
+              >
+                <Badge count={filteredTasksIds.length}>
+                  <DeleteOutlined
+                    style={{ color: "red" }}
+                    className={styles.TaskFixedIcons}
+                  />
+                </Badge>
+              </Tooltip>
+            )}
+
+            <Tooltip
+              color="#01a3a4"
+              placement="left"
+              title="Хадгалах"
+              className="hover: text-5xl hover:bg-gray-200 h-8 w-8 m-2"
+            >
+              <SaveOutlined
+                style={{ color: "green" }}
+                className={styles.TaskFixedIcons}
+              />
+            </Tooltip>
           </div>
         </Col>
       </Row>
-
-      {/* <Row>
-        <Col xs={7} sm={7} md={7} lg={7} xl={7}>
-          <div className={styles.SelectFixed}>
-            <Select
-              showSearch
-              style={{ width: 180 }}
-              placeholder="Хичээл сонгох"
-              //optionFilterProp="children"
-              onChange={OnChangeSubject}
-              //onFocus={onFocus}
-              //onBlur={onBlur}
-              //onSearch={onSearch}
-            >
-              {subjectTableData.map((item) => (
-                <Option key={item._id} value={item._id}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
-            &nbsp;
-            <Select
-              showSearch
-              style={{ width: 160 }}
-              placeholder="Анги сонгох"
-              onChange={OnChangeClass}
-            >
-              {classTableData.map((item) => (
-                <Option key={item._id} value={item._id}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        </Col>
-        <Col xs={11} sm={11} md={11} lg={11} xl={11}>
-          <div className={styles.TaskFixedIcons}>
-            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
-            <ArrowRightOutlined className={styles.TaskFixedIcons} />
-            <FormOutlined className={styles.TaskFixedIcons} />
-            <CopyOutlined className={styles.TaskFixedIcons} />
-            <DeleteOutlined className={styles.TaskFixedIcons} />
-            <PaperClipOutlined className={styles.TaskFixedIcons} />
-            <PrinterOutlined className={styles.TaskFixedIcons} />
-            <CheckCircleOutlined className={styles.TaskFixedIcons} />
-            <EyeOutlined className={styles.TaskFixedIcons} />
-          </div>
-        </Col>
-        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-          <div>
-            <Button className={styles.button}>Даалгавар үүсгэх</Button>
-            <Button className={styles.button}>Тест үүсгэх</Button>
-          </div>
-        </Col>
-      </Row> */}
 
       <Row>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <div>
+          <div className={styles.TaskBankPagination}>
             <Pagination
               showQuickJumper
               defaultCurrent={1}
               defaultPageSize={2}
-              total={filteredTasks.length}
+              total={5}
+              //{filteredTasks.length}
               onChange={onChange}
             />
           </div>
         </Col>
       </Row>
-
-      {/* <div className={styles.taskbank}>
-      <div className="flex">
-         <label>Хичээл </label>
-        <Select
-          showSearch
-          style={{ width: 200 }}
-          placeholder="Хичээл сонгох"
-          //optionFilterProp="children"
-          onChange={OnChangeSubject}
-          //onFocus={onFocus}
-          //onBlur={onBlur}
-          //onSearch={onSearch}
-        >
-          {subjectTableData.map((item) => (
-            <Option key={item._id} value={item._id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
-
-        <label>Анги</label>
-
-        <Select
-          showSearch
-          style={{ width: 200 }}
-          placeholder="Хичээл сонгох"
-          onChange={OnChangeClass}
-        >
-          {classTableData.map((item) => (
-            <Option key={item._id} value={item._id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
-        <label className="border-2">
-          Нийт даалгавар {filteredTasks.length}
-        </label>
-        <label>Сонгогдсон даалгавар {selectedTasks.length} </label>
-
-        <button>Даалгавар үүсгэх</button>
-        <button>Тест үүсгэх</button>
-        <button>Засах</button>
-        <button>Хувилах</button>
-      </div>
-      <div className="flex flex-row" style={{ background: "red" }}>
-        <div className="flex">
-          <Tree
-            checkable
-            onSelect={onSelect}
-            onCheck={onCheck}
-            treeData={topicNodes}
-          />
-        </div>
-        <div className="flex">
-          <TasksComp
-            tasks={filteredTasks}
-            setSelectedTasks={setSelectedTasks}
-          />
-          <Pagination
-            showQuickJumper
-            defaultCurrent={1}
-            defaultPageSize={2}
-            total={filteredTasks.length}
-            onChange={onChange}
-          />
-        </div>
-        <div className="flex" style={{ background: "#000" }}>
-          <BiBookReader />
-          <GrCheckmark />
-          <GrDown /> <GrEdit /> <GrTask />
-        </div>
-      </div>
-    </div>
-
-    <Row>
-      <Col xs={7} sm={7} md={7} lg={7} xl={7}>
-        <div className="flex-5">
-          <Tree
-            checkable
-            onSelect={onSelect}
-            onCheck={onCheck}
-            treeData={topicNodes}
-          />
-
-        </div>
-      </Col>
-      <Col xs={15} sm={15} md={15} lg={15} xl={15}>
-        <div className="flex">
-          <label>Хичээл </label>
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="Хичээл сонгох"
-            //optionFilterProp="children"
-            onChange={OnChangeSubject}
-            //onFocus={onFocus}
-            //onBlur={onBlur}
-            //onSearch={onSearch}
-          >
-            {subjectTableData.map((item) => (
-              <Option key={item._id} value={item._id}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
-
-          <label>Анги</label>
-
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="Хичээл сонгох"
-            onChange={OnChangeClass}
-          >
-            {classTableData.map((item) => (
-              <Option key={item._id} value={item._id}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
-          <label className="border-2 ">
-            Нийт даалгавар {filteredTasks.length}
-          </label>
-          <label>Сонгогдсон даалгавар {selectedTasks.length} </label>
-
-          <button>Даалгавар үүсгэх</button>
-          <button>Тест үүсгэх</button>
-          <button>Засах</button>
-          <button>Хувилах</button>
-        </div>
-
-        <TasksComp
-            tasks={filteredTasks}
-            setSelectedTasks={setSelectedTasks}
-          />
-      </Col>
-      <Col xs={2} sm={2} md={2} lg={2} xl={2}>
-        <div className="flex-2">
-          <BiBookReader />
-          <GrCheckmark />
-          <GrDown /> <GrEdit /> <GrTask />
-        </div>
-      </Col>
-
-      <div className="taskbank">
-        <div className="flex flex-row">
-          <div className="flex-auto">
-            <Pagination
-              showQuickJumper
-              defaultCurrent={1}
-              defaultPageSize={2}
-              total={filteredTasks.length}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-      </div>
-    </Row> */}
     </>
   );
 }

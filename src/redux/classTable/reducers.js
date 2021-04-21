@@ -4,7 +4,7 @@ import actions from './actions';
 const { LOAD_CLASS_BEGIN, LOAD_CLASS_SUCCESS, LOAD_CLASS_ERR } = actions;
 
 const initialStateFilter = {
-  data: [],
+  list: [],
   loading: false,
   error: null,
 };
@@ -20,7 +20,7 @@ const classTableReducer = (state = initialStateFilter, action) => {
     case LOAD_CLASS_SUCCESS:
       return {
         ...state,
-        data:[...data.data],
+        list:[...data.data],
         loading: false,
       };
     case LOAD_CLASS_ERR:

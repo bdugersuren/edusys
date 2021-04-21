@@ -4,9 +4,9 @@ import actions from './actions';
 const { LOAD_SUBJECT_BEGIN, LOAD_SUBJECT_SUCCESS, LOAD_SUBJECTSS_ERR } = actions;
 
 const initialStateFilter = {
-  data: [],
+  list: [],
   loading: false,
-  error: null,
+  error: null,  
 };
 
 const subjectTableReducer = (state = initialStateFilter, action) => {
@@ -21,7 +21,7 @@ const subjectTableReducer = (state = initialStateFilter, action) => {
       //console.log("++++++++++++++++++++++++++++",data);
       return {
         ...state,
-        data: [...data.data],
+        list: [...data.data],
         loading: false,
       };
     case LOAD_SUBJECTSS_ERR:

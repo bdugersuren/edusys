@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TasksComp from "../../components/TasksComp";
 import { useSelector, useDispatch } from "react-redux";
-import { Row, Col } from "antd";
-import TaskComp from "./../../components/TasksComp";
+
 import { loadClassDatas } from "../../redux/classTable/actionCreator";
 import { loadSubjectDatas } from "../../redux/subjectTable/actionCreator";
 import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
@@ -11,21 +10,16 @@ import {
   changeSelSubjectId,
   changeSelClassId,
   changeTopicIds,
+  changeCurrentPage
 } from "../../redux/taskTable/actionCreator";
-import { Checkbox, Descriptions, Badge } from "antd";
-
-import { ReactSVG } from "react-svg";
-import task from "../../assets/img/svg/task.svg";
-import text from "../../assets/img/svg/text.svg";
+import { Row, Col, Badge, Button } from "antd";
 
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
-  FileAddOutlined,
   CheckCircleOutlined,
   EyeOutlined,
   CopyOutlined,
-  CloseOutlined,
   ScissorOutlined,
   PrinterOutlined,
   PaperClipOutlined,
@@ -48,18 +42,11 @@ import {
   FullscreenExitOutlined,
 } from "@ant-design/icons";
 import { BiBookReader } from "react-icons/bi";
-import { Button } from "antd";
 
-import { GrCheckmark, GrDown, GrEdit, GrTask } from "react-icons/gr";
-import {
-  BiScan,
-  BiOutline,
-  BiVerticalCenter,
-  BiMoveVertical,
-} from "react-icons/bi";
-import { icons } from "antd/lib/image/PreviewGroup";
 
-import { Select, Tree, Pagination, Tooltip } from "antd";
+
+
+import { Select, Tree, Pagination, Tooltip,Statistic,Card } from "antd";
 import styles from "./style.module.css";
 import IconComp from "../../components/IconComp";
 
@@ -71,20 +58,15 @@ for (let i = 10; i < 36; i++) {
 }
 
 function handleChange(value) {
-  console.log(`selected ${value}`);
+  //console.log(`selected ${value}`);
 }
 
-function TaskBankPage() {
+//Тухайн хуудасны эхлэл-------------------------------------------------------------------------------------------------
+const TaskBankPage=()=> {
+  const dispatch = useDispatch();
   const { Option } = Select;
 
-  const SelectedTaskValue = () => {
-    setSelectedTasks(["123", "456"]);
-    console.log("8888888888888888888888888888");
-  };
 
-  function onChange(e) {
-    console.log(`checked = ${e.target.checked}`);
-  }
 
   //const [checked, setChecked] = useState([]);
   //const [expanded, setExpanded] = useState([]);
@@ -92,16 +74,6 @@ function TaskBankPage() {
   const [subjectId, setSubjectId] = useState(null);
   const [checkedTrees, setCheckedTrees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadTopicDatas());
-    dispatch(loadClassDatas());
-    dispatch(loadSubjectDatas());
-    dispatch(loadTaskDatas());
-
-    setSubjectId(selSubjId);
-  }, []);
 
   const subjectTableData = useSelector((state) => state.subjectTable.list);
   const classTableData = useSelector((state) => state.classTable.list);
@@ -111,6 +83,23 @@ function TaskBankPage() {
   const selClssId = useSelector((state) => state.tasks.selectedClassId);
   const checkedTopicIds = useSelector((state) => state.tasks.checkedTopicIds);
   const filteredTasksIds = useSelector((state) => state.tasks.filteredTasks);
+  const currentPage = useSelector((state) => state.tasks.currentPage);
+  const pagesize = useSelector((state) => state.tasks.pageSize);
+
+  useEffect(() => {
+    dispatch(loadClassDatas());
+    dispatch(loadSubjectDatas());
+    dispatch(loadTaskDatas());
+    //setSubjectId(selSubjId);
+  }, []);
+
+  useEffect(() => {
+    dispatch(loadTopicDatas());
+  }, [selSubjId, selClssId]);
+  
+
+
+
 
   const OnChangeClass = (value) => {
     setClassId(value);
@@ -121,7 +110,7 @@ function TaskBankPage() {
     //changeSelSubjectId
     dispatch(changeSelSubjectId(value));
     //setSubjectId(selSubjId);
-    console.log("================Select value===============> ", value);
+    //console.log("================Select value===============> ", value);
   };
 
   const classOptions = [];
@@ -158,27 +147,57 @@ function TaskBankPage() {
           children,
         });
       });
-  console.log(topicNodes, "<----------------------");
+  //console.log(topicNodes, "<----------------------");
 
   function onChange(value) {
-    console.log(`selected ${value}`);
+    //console.log(`selected---------------------> ${value} \n`);
+    dispatch(changeCurrentPage(value));
+    
   }
 
   const onSelect = (selectedKeys, info) => {
-    console.log("selected", selectedKeys, info);
+    //console.log("selected", selectedKeys, info);
   };
 
   const onCheckedTopicIds = (checkedKeys, info) => {
     dispatch(changeTopicIds(checkedKeys));
     setCheckedTrees(checkedKeys);
-    console.log("onCheck", checkedKeys, info, checkedTrees);
+    //console.log("onCheck", checkedKeys, info, checkedTrees);
   };
+
+  const cnt= taskTableData.filter((t) => checkedTopicIds.includes(t.topic_id)).length;
 
   return (
     <>
       <Row>
         <Col xs={7} sm={7} md={7} lg={7} xl={7}>
-          <div className={styles.SelectFixed}>
+          
+        </Col>
+        <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+          <div className={styles.TaskFixedIcons}>
+            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
+            <ArrowRightOutlined className={styles.TaskFixedIcons} />
+            <FormOutlined className={styles.TaskFixedIcons} />
+            <CopyOutlined className={styles.TaskFixedIcons} />
+            <DeleteOutlined className={styles.TaskFixedIcons} />
+            <PaperClipOutlined className={styles.TaskFixedIcons} />
+            <PrinterOutlined className={styles.TaskFixedIcons} />
+            <CheckCircleOutlined className={styles.TaskFixedIcons} />
+            <EyeOutlined className={styles.TaskFixedIcons} />
+          </div>
+        </Col>
+        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+          <div>
+            <Button className={styles.button}>Даалгавар үүсгэх</Button>
+            <Button className={styles.button}>Тест үүсгэх</Button>
+          </div>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col xs={5} sm={5} md={5} lg={5} xl={5}>
+        <div className={styles.SelectFixed}>
+          <div>Анги</div>
             <Select
               showSearch
               defaultValue={selSubjId}
@@ -211,85 +230,57 @@ function TaskBankPage() {
               ))}
             </Select>
           </div>
-        </Col>
-        <Col xs={11} sm={11} md={11} lg={11} xl={11}>
-          <div className={styles.TaskFixedIcons}>
-            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
-            <ArrowRightOutlined className={styles.TaskFixedIcons} />
-            <FormOutlined className={styles.TaskFixedIcons} />
-            <CopyOutlined className={styles.TaskFixedIcons} />
-            <DeleteOutlined className={styles.TaskFixedIcons} />
-            <PaperClipOutlined className={styles.TaskFixedIcons} />
-            <PrinterOutlined className={styles.TaskFixedIcons} />
-            <CheckCircleOutlined className={styles.TaskFixedIcons} />
-            <EyeOutlined className={styles.TaskFixedIcons} />
-          </div>
-        </Col>
-        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
-          <div>
-            <Button className={styles.button}>Даалгавар үүсгэх</Button>
-            <Button className={styles.button}>Тест үүсгэх</Button>
-          </div>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col xs={5} sm={5} md={5} lg={5} xl={5}>
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            placeholder="Бүлгээр сонгох"
-            defaultValue={["a10", "c12"]}
-            onChange={handleChange}
-          >
-            {children}
-          </Select>
+        
         </Col>
         <Col xs={19} sm={19} md={19} lg={19} xl={19}>
-          <div className={styles.TaskSelectItem} className="flex">
-            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              Бүгдийг сонгох
-            </Checkbox>
-
-            <div className="mx-5 px-1">
-              <Tooltip color="#FF0000" placement="bottom" title="Нийт тестээс сонгогдсон">
-                <Badge
-                  count={`${filteredTasksIds.length}/${checkedTopicIds.length}`}
-                  offset={[10, 0]}
-                >
-                  <IconComp
-                    iconCode="sigma"
-                    style={{ color: "red" }}
-                    className={styles.TaskFixedIcons}
+          <div className="flex">
+          <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
+            <Statistic 
+                  title="Нийт даалгавраас" 
+                  value={`${filteredTasksIds.length} / ${taskTableData.filter((t) => checkedTopicIds.includes(t.topic_id)).length}`}  
+                  prefix={<FolderOpenOutlined />}
                   />
-                </Badge>
-              </Tooltip>
-            </div>
+          </Card>
 
-            
+          <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
+            <Statistic 
+                  title="Нэг сонголттой" 
+                  value={`${filteredTasksIds.length} / ${taskTableData.filter((t) => checkedTopicIds.includes(t.topic_id)).length}`}  
+                  prefix={<FolderOpenOutlined />}
+                  />
+          </Card>
+          <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
+            <Statistic 
+                  title="Бусад" 
+                  value={`${filteredTasksIds.length} / ${cnt}`}  
+                  prefix={<FolderOpenOutlined />}
+                  />
+          </Card>
+          <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
+            <Statistic 
+                  title="Хүнд түвшин" 
+                  value={`${filteredTasksIds.length} / ${cnt}`}  
+                  prefix={<FolderOpenOutlined />}
+                  />
+          </Card>
+          <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
+            <Statistic 
+                  title="Дундаж түвшин" 
+                  value={`${filteredTasksIds.length} / ${cnt}`}  
+                  prefix={<FolderOpenOutlined />}
+                  />
+          </Card>
+          <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
+            <Statistic 
+                  title="Хөнгөн түвшин" 
+                  value={`${filteredTasksIds.length} / ${cnt}`}  
+                  prefix={<FolderOpenOutlined />}
+                  />
+          </Card>
 
-            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              <ReactSVG src={task} style={{ width: "15px" }} />
-            </Checkbox>
-            <Checkbox className={styles.TaskSelectItem} onChange={onChange}>
-              <ReactSVG src={text} style={{ width: "15px" }} />
-            </Checkbox>
-            <div className={styles.TaskInfoButton}>
-              <Button className={styles.TaskInfoButton} key="3">
-                Даалгавар: 31 {/*{filteredTasks.length} */}
-              </Button>
-              <Button className={styles.TaskInfoButton} key="2">
-                Сонгогдсон: 2{/* {selectedTasks.length} */}
-              </Button>
-              <Button className={styles.TaskInfoButton} key="1">
-                Авах оноо: 40{" "}
-              </Button>
-              <Button className={styles.TaskInfoButton} key="4">
-                Шалгалт авах огноо: 2021-04-22 16:40{" "}
-              </Button>
-            </div>
-          </div>
+
+
+ </div>
         </Col>
         <Col xs={0} sm={0} md={0} lg={0} xl={0}></Col>
       </Row>
@@ -380,9 +371,9 @@ function TaskBankPage() {
           <div className={styles.TaskBankPagination}>
             <Pagination
               showQuickJumper
-              defaultCurrent={1}
-              defaultPageSize={2}
-              total={5}
+              defaultCurrent={currentPage}
+              defaultPageSize={pagesize}
+              total={cnt}
               //{filteredTasks.length}
               onChange={onChange}
             />

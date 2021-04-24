@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { changeCheckedTasks} from "../../redux/taskTable/actionCreator";
+import ReactHtmlParser from 'react-html-parser';
+//import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 import { Radio } from "antd";
 import { Checkbox } from "antd";
-import { Row, Col, Divider,Modal, Button } from "antd";
+import { Row, Col,Modal } from "antd";
 import styles from "./style.module.css";
 //#region  Icons
-import { ReactSVG } from 'react-svg'
-import level1 from '../../assets/img/svg/level1.svg';
-import level2 from '../../assets/img/svg/level2.svg';
-import level3 from '../../assets/img/svg/level3.svg';
-import level4 from '../../assets/img/svg/level4.svg';
-import file from '../../assets/img/svg/file.svg';
-import compare from '../../assets/img/svg/compare.svg';
-import list from '../../assets/img/svg/list.svg';
-import task from '../../assets/img/svg/task.svg';
-import text from '../../assets/img/svg/text.svg';
-import trueFalse from '../../assets/img/svg/true&false.svg';
-
-
 
 import {
   CgMaximize,
@@ -28,12 +17,7 @@ import {
   CgChevronUp,
 } from "react-icons/cg";
 
-import {
-  BiCheckboxChecked,
-  BiCheckbox,
-  BiArrowFromTop,
-  BiSortUp,
-} from "react-icons/bi";
+//import {BiCheckboxChecked, BiCheckbox, BiArrowFromTop, BiSortUp,} from "react-icons/bi";
 
 
 import {
@@ -49,14 +33,14 @@ function TaskItem({ task }) {
 
   const [isAnswer, setIsAnswer] = useState(false);
   const [isQuestions, setIsQuestions] = useState(task.isExpendAllTask);
-  const [isChoose, setIsChoose] = useState(false);
+  //const [isChoose, setIsChoose] = useState(false);
   const [value, setValue] = useState(null);
 
   const checkedTaskIds = useSelector((state) => state.tasks.checkedTaskIds);
 
 
   function onChange(e) {
-    console.log(`checked = ${e.target.checked}    id=>  ${checkedTaskIds}`);
+    //console.log(`checked = ${e.target.checked}    id=>  ${checkedTaskIds}`);
     //setValue(e.target.value);
     dispatch(changeCheckedTasks({id:task._id, isChecked:e.target.checked}));
   }
@@ -66,7 +50,7 @@ function TaskItem({ task }) {
     setIsQuestions(task.isExpentTask);
   }, [task]);
 
-  console.log(task);
+  //console.log(task);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -124,22 +108,26 @@ function TaskItem({ task }) {
           {isQuestions && (
             <div>
               <div className={styles.TaskQuestionsList} style={{borderBottom: '1px solid #ddd', paddingBottom: '1rem' }}>
-                {task.questions} 
+              {ReactHtmlParser( task.questions)}
                 {/* Монголчууд түүхийн явцдаа уйгуржин, дөрвөлжин бичиг, латин, кирилл зэрэг бичгүүдийг хэрэглэж ирсэн билээ. Энэ нь соёлын ямар шинжид хамаарах вэ? */}
               Эх сурвалж. Луков - Данненбергийн иргэдийн санаачилсан ухуулах хуудас. Германд атомын аж үйлдвэрийн байгууламжийн эсрэг, ерөөс нутгаа хэт барилгажуулахын эсрэг шууд хүч хэрэглэхгүй суулт хийх, хэвтэж хаалт болох зэргээр эсэргүүцэл гардаг. Энэ бүхэн нь бүх хүний амьдралын төлөө учир цагдаагийн оролцоо хэрэггүй... Парламентын олонхи ч энэ хариуцлагыг бидэнд олгоогүй юм. Бидний энэ арга хэмжээ бол үндсэн хуулиар олгогдсон эсэргүүцэх эрхээ л ашиглаж байгаа хэрэг мөн. Дээрх эх сурвалж нь улс төрийн системийн аль бүрэлдэхүүн хэсгийн тухай өгүүлж байна вэ?
               </div>
 
               <div className={styles.TaskAnswerList}>
                 {isAnswer && (
-                  <Radio.Group onChange={onChange} value={value}>
+                  <Radio.Group 
+                      //onChange={onChange} 
+                      value={value}>
                     {task.q_answer.length > 0 &&
                       task.q_answer.map((ans) => (
                         <Radio
                           className={styles.TaskAnswerRadio}
                           key={ans._id}
                           value={ans._id}
+                          onChange={()=>setValue(value)}
                         >
-                          {ans.answer1}
+                          <p>{ReactHtmlParser(ans.answer1)}</p>
+                          
                         </Radio>
                       ))}
                   </Radio.Group>
@@ -154,7 +142,8 @@ function TaskItem({ task }) {
       </Row>
     
       <Modal title="Даалгаврын харагдах байдал" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} width={1000}>
-        <p> { task.questions}</p>
+        
+        {ReactHtmlParser( task.questions)}
         <hr />
 
         <div className={styles.TaskAnswerList}>
@@ -165,9 +154,9 @@ function TaskItem({ task }) {
                         <Radio
                           className={styles.TaskAnswerRadio}
                           key={ans._id}
-                          value={ans._id}
-                        >
-                          {ans.answer1}
+                          value={ans._id}>
+                          
+                          {ReactHtmlParser(ans.answer1)}
                         </Radio>
                       ))}
                   </Radio.Group>

@@ -2,7 +2,7 @@ import actions from './actions';
 //import initialState from '../../demoData/topicData.json';
 import axios from "../../utility/axios";
 
-const { loadTaskBegin, loadTaskSuccess, loadTaskErr, changeSelectedSubjectId, changeSelectClassId, changeCheckedTopicIds , changeCheckedTaskId} = actions;
+const { loadTaskBegin, loadTaskSuccess, loadTaskErr, changeSelectedSubjectId, changeSelectClassId, changeCheckedTopicIds , changeCheckedTaskId, setCurrentPage, setAllCheckTask} = actions;
 
 const loadTaskDatas = () => {
   return async dispatch => {
@@ -102,6 +102,30 @@ const changeCheckedTasks = (taskInf) => {
   };
 };
 
+const changeCurrentPage = (currentPage) => {
+  return async dispatch => {
+    try {
+      dispatch(loadTaskBegin());
 
+      dispatch(setCurrentPage(currentPage));
 
-export { loadTaskDatas, filterTaskDatas, addFullTaskData , changeSelSubjectId, changeSelClassId, changeTopicIds, changeCheckedTasks};
+    } catch (err) {
+      dispatch(loadTaskErr(err));
+    }
+  };
+};
+
+const setAllCheckTasks = (isOk) => {
+  return async dispatch => {
+    try {
+      dispatch(loadTaskBegin());
+
+      dispatch(setAllCheckTask(isOk));
+
+    } catch (err) {
+      dispatch(loadTaskErr(err));
+    }
+  };
+};
+
+export { loadTaskDatas, filterTaskDatas, addFullTaskData , changeSelSubjectId, changeSelClassId, changeTopicIds, changeCheckedTasks, changeCurrentPage, setAllCheckTasks};

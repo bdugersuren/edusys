@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  loadTaskDatas,
-  changeSelSubjectId,
-  changeSelClassId,
-  changeTopicIds,
-} from "../../redux/taskTable/actionCreator";
+import {loadTaskDatas,setAllCheckTasks } from "../../redux/taskTable/actionCreator";
 
 import TaskItem from "./TaskItem";
-
+import { Row, Checkbox } from "antd";
 import styles from "./style.module.css";
-
-import { Row, Col, Tooltip, Checkbox } from "antd";
 
 import {
   BiScan,
   BiOutline,
   BiVerticalCenter,
   BiMoveVertical,
-  BiCheckboxChecked,
-  BiCheckboxSquare,
-  BiCheckbox,
+  // BiCheckboxChecked,
+  // BiCheckboxSquare,
+  // BiCheckbox,
 } from "react-icons/bi";
 
 function TasksComp() {
@@ -30,77 +23,63 @@ function TasksComp() {
   const taskTableData = useSelector((state) => state.tasks.list);
   const checkedTopicIds = useSelector((state) => state.tasks.checkedTopicIds);
   const filteredTasksIds = useSelector((state) => state.tasks.filteredTasks);
+  const currentPage = useSelector((state) => state.tasks.currentPage);
+  const pagesize = useSelector((state) => state.tasks.pageSize);
 
   const [isExpendAllTask, setIsExpendAllTask] = useState(false);
   const [isExpendAllAns, setIsExpendAllAns] = useState(false);
   const [filteredTasks, setFilteredTasks] = useState([]);
-  const [isAllSelected, setIsAllSelected] = useState(0);
+  //const [isAllSelected, setIsAllSelected] = useState(0);
+  const [indeterminate, setIndeterminate] = useState(false);
 
-  const setIsSelectedTask = ({ id }) => {
-    //setSelectedTasks(["123", "456"]);
-    console.log("8888888888888888888888888888", id);
-  };
+  const cnt= taskTableData.filter((t) => checkedTopicIds.includes(t.topic_id)).length;
 
-  function onChange(e) {
-    console.log(`checked = ${e.target.checked}`);
+  function onAllCheck(e) {
+    dispatch(setAllCheckTasks(e.target.checked)); 
   }
 
   useEffect(() => {
     dispatch(loadTaskDatas());
   }, []);
 
+
+  useEffect(() => {  
+    if(filteredTasksIds.length!==cnt)  setIndeterminate(true);
+      else setIndeterminate(false);
+    if(filteredTasksIds.length===0){
+      setIndeterminate(false);
+    }
+  }, [cnt,filteredTasksIds]);
+
+
   useEffect(() => {
     let filteredData = [];
     taskTableData
-      .filter((t) => checkedTopicIds.includes(t.topic_id))
-      .map((t) => {
-        const {
-          _id,
-          questions,
-          q_answer,
-          title,
-          description,
-          ndx,
-          topic_id,
-          user_id,
-          taskLevel_id,
-          taskType_id,
-        } = t;
+      .filter((t) => checkedTopicIds.includes(t.topic_id)).slice(10*(currentPage-1), 10*(currentPage))
+      .map((t) => {        
         return filteredData.push({
-          checked: filteredTasksIds.includes(_id),
+          ...t,
+          checked: filteredTasksIds.includes(t._id),
           isExpentTask: isExpendAllTask,
-          isExpentAns: isExpendAllAns,
-          _id,
-          questions,
-          title,
-          description,
-          q_answer,
-          ndx,
-          topic_id,
-          user_id,
-          taskLevel_id,
-          taskType_id
+          isExpentAns: isExpendAllAns,          
         });
       });
     setFilteredTasks(filteredData);
-    console.log("================>", filteredTasksIds);
-  }, [checkedTopicIds, filteredTasksIds, isExpendAllTask, isExpendAllAns]);
+  }, [checkedTopicIds, filteredTasksIds, isExpendAllTask, isExpendAllAns,currentPage, pagesize]);
 
-  return (
+    return (
     <Row>
       <div className={styles.TaskBoxCenter}>
         <div className="flex h-10 items-center text-xl">
-          <div
-            onClick={() => setIsAllSelected(!isAllSelected)}
-            className="flex items-center cursor-pointer "
-          >
-            {isAllSelected === 0 ? <BiCheckbox /> : <BiCheckboxChecked />}
-            <div>Бүгдийг сонгох</div>
+          <div>
+            <Checkbox onChange={onAllCheck} indeterminate={indeterminate}>
+              Бүгдийг сонгох
+            </Checkbox>
           </div>
-          <div className="mx-3 px-3 bg-green-200">
-            {" "}
-            Сонгогдсон {filteredTasksIds.length}/{filteredTasks.length}
-          </div>
+          
+          {/* <div className="mx-3 px-3 bg-green-200">            
+            Сонгогдсон {filteredTasksIds.length}/{cnt}
+          </div> */}
           <div className="flex-auto"></div>
 
           <div

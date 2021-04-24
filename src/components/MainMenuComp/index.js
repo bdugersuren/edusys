@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Menu } from "antd";
 import { Row, Col } from "antd";
 import styles from "./style.module.css";
-import { Avatar, Image } from "antd";
+import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import logo from "./../../assets/img/logo.png";
-import UserInfoComp from './../../components/UserInfoComp';
+//import UserInfoComp from './../../components/UserInfoComp';
 import { MailOutlined, SettingOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 

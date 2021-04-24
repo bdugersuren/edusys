@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './style.modu.css';
+//import styles from './style.modu.css';
 
 function Testing() {
   return (

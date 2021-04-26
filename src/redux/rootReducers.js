@@ -9,6 +9,7 @@ import {classTableReducer} from './classTable/reducers';
 import {subjectTableReducer} from './subjectTable/reducers';
 import {topicTableReducer} from './topicTable/reducers';
 import {taskTableReducer} from './taskTable/reducers';
+import {taskLevelReducer} from './taskLevel/reducers';
 
 const persistConfig = {
   key:'root',
@@ -23,7 +24,8 @@ const rootReducers = combineReducers({
   subjectTable: subjectTableReducer,
   topicTable:topicTableReducer,
   i18n: i18nReducer,
-  tasks:taskTableReducer
+  tasks:taskTableReducer,
+  taskLevel:taskLevelReducer
 });
 
 export default persistReducer(persistConfig, rootReducers);

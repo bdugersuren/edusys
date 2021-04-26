@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loadClassDatas } from "../../redux/classTable/actionCreator";
 import { loadSubjectDatas } from "../../redux/subjectTable/actionCreator";
 import { loadTopicDatas } from "../../redux/topicTable/actionCreator";
+import { loadTaskLevelDatas } from "../../redux/taskLevel/actionCreator";
 import {
   loadTaskDatas,
   addFullTaskData,
@@ -33,7 +34,7 @@ import {
   Radio,
   Tooltip,
   Badge,
-  Input,Rate
+  Input,Rate,InputNumber 
 } from "antd";
 
 import styles from "./style.module.css";
@@ -93,14 +94,25 @@ function CreateTaskPage() {
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [editor, setEditor] = useState(null);
   const [lvl, setLvl] = useState(1);
+  const [correctAnswer, setCorrectAnswer] = useState(1);
+
+
+  const  onHandleCorrectAns=(e)=>{
+    setCorrectAnswer(e.target.value);
+    console.log("======================          ${value}         =====================", e.target.value);
+  }
   //const [filteredTasks, setFilteredTasks] = useState([]);
   const [task, setTask] = useState({
+    title:"",
     questions: "",
+    correctFeedback:"",
+    incorrectFeedback:"",
     taskType_id: "606efc7cb5f4f304b423dabb",
     user_id: "5fd77142b3c8ca42a0d2a579",
     topic_id: "606da27de20d6052e0b776f9",
     taskLevel_id: "606efacfb5f4f304b423dab4",
     ndx: "",
+    score:0,
     title: "Энгийг бутархайн хуваарь нь ижил үед",
     description: "Энгийн бутархайг хуваарь нь ялгаатай бол ижил болгох ёстой",
     createdDate: "2021-04-13T08:12:53.837Z",
@@ -115,6 +127,33 @@ function CreateTaskPage() {
       },
     ],
   });
+
+  const onChangeScore=(value)=> {
+    setTask({ ...task, score: value });
+  }
+  const  onHandleAnsType = (e) => {
+    setTask({ ...task, taskType_id: e.target.value });
+};
+
+  
+  const  onSelectTopicId = (selectedKeysValue, info) => {
+    setTask({ ...task, topic_id: selectedKeysValue[0] });
+};
+
+  const  handleChangeLvl = value => {
+    setTask({ ...task, taskLevel_id: taskLevel[value-1]._id });
+    setLvl(value);
+};
+  const onChangeTitle=(e)=>{
+    setTask({ ...task, title: e.target.value });
+  }
+  const onChangeCorrectFeedback=(e)=>{
+    setTask({ ...task, correctFeedback: e.target.value });
+  }
+  const onChangeIncorrectFeedback=(e)=>{
+    setTask({ ...task, incorrectFeedback: e.target.value });
+  }
+
   const handleTaskChange = (data) => {
     setTask({ ...task, questions: data });
   };
@@ -150,6 +189,7 @@ function CreateTaskPage() {
     dispatch(loadClassDatas());
     dispatch(loadSubjectDatas());
     dispatch(loadTaskDatas());
+    dispatch(loadTaskLevelDatas());    
   }, []);
 
   const subjectTableData = useSelector((state) => state.subjectTable.list);
@@ -159,6 +199,8 @@ function CreateTaskPage() {
   const filteredTasks = useSelector((state) => state.tasks.filteredTasks);
   const selSubjId = useSelector((state) => state.tasks.selectedSubjId);
   const selClssId = useSelector((state) => state.tasks.selectedClassId);
+  const taskLevel = useSelector((state) => state.taskLevel.list);
+  
 
   const OnChangeClass = (value) => {
     setClassId(value);
@@ -216,10 +258,7 @@ function CreateTaskPage() {
     console.log("onCheck", checkedKeys, info, checkedTrees);
   };
 
-const  handleChangeLvl = value => {
-    setLvl(value);
-    //console.log(value);
-};
+
   return (
     <>
       <Row>
@@ -239,8 +278,8 @@ const  handleChangeLvl = value => {
         </Col>
         <Col xs={6} sm={6} md={6} lg={6} xl={6}>
           <div>
-            <Button className={styles.button}>Даалгавар үүсгэх</Button>
-            <Button className={styles.button}>Тест үүсгэх</Button>
+            {/* <Button className={styles.button}>Даалгавар үүсгэх</Button>
+            <Button className={styles.button}>Тест үүсгэх</Button> */}
           </div>
         </Col>
       </Row>
@@ -296,22 +335,17 @@ const  handleChangeLvl = value => {
               buttonStyle="solid"
               style={{ marginTop: 16 }}
             >
-              <Radio.Button value="a">
+              <Radio.Button value="606efc71b5f4f304b423daba" onChange={onHandleAnsType}>
                 {" "}
                 <IconComp iconCode="list" color="#18FFff" size="24" />{" "}
-                <div>Нэг сонголттой</div>{" "}
+                <div>Олон сонголттой</div>{" "}
               </Radio.Button>
-              <Radio.Button value="c">
+              <Radio.Button value="6084498c133c565c4d52e6f4" onChange={onHandleAnsType}>
                 {" "}
                 <IconComp iconCode="openQuiz" color="#18FFff" size="24" />{" "}
                 Нээлттэй
               </Radio.Button>
 
-              <Radio.Button value="b" disabled>
-                {" "}
-                <IconComp iconCode="openQuiz" color="#18FFff" size="24" /> Олон
-                сонголттой{" "}
-              </Radio.Button>
               <Radio.Button value="d" disabled>
                 <IconComp iconCode="openQuiz" color="#18FFff" size="24" />{" "}
                 Харгалзуулах
@@ -320,6 +354,22 @@ const  handleChangeLvl = value => {
                 <IconComp iconCode="openQuiz" color="#18FFff" size="24" /> Нөхөх
               </Radio.Button>
             </Radio.Group>
+         
+            
+                <span>
+                  <Rate
+                    tooltips={taskLevel.map(t=>{return(t.name)})}
+                    onChange={handleChangeLvl}
+                    value={lvl}
+                    count={taskLevel.length}
+                  />
+                  {lvl ? (
+                    <span className="ant-rate-text"></span>
+                  ) : (
+                    ""
+                  )}
+                </span>
+
           </div>
         </Col>
         <Col xs={0} sm={0} md={0} lg={0} xl={0}></Col>
@@ -328,9 +378,9 @@ const  handleChangeLvl = value => {
         <Col xs={5} sm={5} md={5} lg={5} xl={5}>
           <div className={styles.taskTree}>
             <Tree
-              checkable
+              //checkable
               //checkedKeys={checkedTopicIds}
-              //onSelect={onSelect}
+              onSelect={onSelectTopicId}
               //onCheck={onCheckedTopicIds}
               treeData={topicNodes}
             />
@@ -339,6 +389,10 @@ const  handleChangeLvl = value => {
         <Col xs={17} sm={18} md={18} lg={18} xl={18}>
           <Row>
             <Col className="flex ">
+            <InputNumber min={0} max={100} defaultValue={1} onChange={onChangeScore} />
+
+
+
               <div className="flex mx-4">
                 <AiOutlineEye />
                 <div>Харах</div>
@@ -348,27 +402,14 @@ const  handleChangeLvl = value => {
                 <div>Хадгалах</div>
               </div>
 
-              <div>
-                <span>
-                  <Rate
-                    tooltips={desc}
-                    onChange={handleChangeLvl}
-                    value={lvl}
-                    count={5}
-                  />
-                  {lvl ? (
-                    <span className="ant-rate-text">{desc[lvl-1]}</span>
-                  ) : (
-                    ""
-                  )}
-                </span>
-              </div>
+              
             </Col>
           </Row>
 
           <Row>
             <Col className="w-full">
-              <Input placeholder="Тухайн даалгаврын гарчиг" />
+              <Input placeholder="Тухайн даалгаврын гарчиг" showCount maxLength={50} onChange={onChangeTitle}  />
+              
             </Col>
           </Row>
 
@@ -401,9 +442,9 @@ const  handleChangeLvl = value => {
               <div className="flex">
                 <div>Зөв Хариулт</div> <BiQuestionMark />
               </div>
-              <Radio.Group onChange={onChange} value={1}>
+              <Radio.Group onChange={onChange} value={correctAnswer}>
                 {task.answers.map((x, i) => (
-                  <Radio value={i + 1}>Хариулт - {i + 1}</Radio>
+                  <Radio value={i + 1} onChange={onHandleCorrectAns} >Хариулт - {i + 1}</Radio>
                 ))}
               </Radio.Group>
               {task.answers.map((x, i) => {
@@ -463,14 +504,23 @@ const  handleChangeLvl = value => {
             <Col className="w-full">
               <div>
                 <div>Зөв хариултан өгөх тайлбар</div>
-                <TextArea rows={4} />
+                <TextArea rows={4}  onChange={onChangeCorrectFeedback} />
               </div>
               <div>
                 <div>Буруу хариултан өгөх тайлбар</div>
-                <TextArea rows={4} />
+                <TextArea rows={4} onChange={onChangeIncorrectFeedback}/>
               </div>
             </Col>
           </Row>
+
+{/* <Row>
+  <Col className="w-96">
+                  { JSON.stringify(task)}
+  </Col>
+</Row> */}
+
+
+
         </Col>
         <Col xs={1} sm={1} md={1} lg={1} xl={1}>
           <div className={styles.TaskRightFixedIcons}>
@@ -527,10 +577,10 @@ const  handleChangeLvl = value => {
               title="Хадгалах"
               className="hover: text-5xl hover:bg-gray-200 h-8 w-8 m-2"
             >
-              <SaveOutlined
-                style={{ color: "green" }}
-                className={styles.TaskFixedIcons}
-              />
+              <Button 
+                  onClick={handleSaveTask}
+                  icon={<SaveOutlined />}                  
+              />                            
             </Tooltip>
           </div>
         </Col>

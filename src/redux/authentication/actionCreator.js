@@ -12,7 +12,7 @@ const login = (username, password) => {
       // http://localhost:8000
       await axios.post("users/login", {email:username, password:password})
       .then(({data})=>{
-        //console.log('login information ==========================>',data);
+        console.log('login information ==========================>',data);
        // Cookies.set('logedIn', true);        
        return dispatch(loginSuccess(data));
       });

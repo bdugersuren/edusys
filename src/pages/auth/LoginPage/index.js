@@ -17,7 +17,7 @@ function LoginPage() {
     dispatch(login(values.username, values.password))
     .then(()=>{
       history.push('/taskbank');
-      window.location.reload();
+      //window.location.reload();
     }).catch((e)=>{
       console.log('Received values of form: ', values);
     });

@@ -1,8 +1,10 @@
 import actions from './actions';
 //import initialState from '../../demoData/topicData.json';
 import axios from "../../utility/axios";
+import {useSelector} from 'react-redux';
 
-const { loadTaskBegin, loadTaskSuccess, loadTaskErr, changeSelectedSubjectId, changeSelectClassId, changeCheckedTopicIds , changeCheckedTaskId, setCurrentPage, setAllCheckTask} = actions;
+
+const { loadTaskBegin, loadTaskSuccess, loadTaskErr, changeSelectedSubjectId, changeSelectClassId, changeCheckedTopicIds , changeCheckedTaskId, setCurrentPage, setAllCheckTask, deleteTaskSuccess, setTaskUserId} = actions;
 
 const loadTaskDatas = () => {
   return async dispatch => {
@@ -12,7 +14,7 @@ const loadTaskDatas = () => {
       await axios.get("tasks?limit=100").then(({ data }) => {
         return dispatch(loadTaskSuccess(data));
       });
-      
+
       //dispatch(loadTopicSuccess(initialState));
     } catch (err) {
       dispatch(loadTaskErr(err));
@@ -128,4 +130,34 @@ const setAllCheckTasks = (isOk) => {
   };
 };
 
-export { loadTaskDatas, filterTaskDatas, addFullTaskData , changeSelSubjectId, changeSelClassId, changeTopicIds, changeCheckedTasks, changeCurrentPage, setAllCheckTasks};
+
+const delTask = (id) => {
+  return async dispatch => {
+    //const token = useSelector((state) => state.auth.login.token);
+    try {
+      dispatch(loadTaskBegin());
+      //console.log("++++++++++++++++++++ >",token);
+      ///dispatch(setAllCheckTask(id));
+      const del_url='tasks/'+id.toString();
+      await axios.delete(del_url).then(({ data }) => {
+        return dispatch(deleteTaskSuccess(data));
+      });
+
+    } catch (err) {
+      dispatch(loadTaskErr(err));
+    }
+  };
+};
+
+const setTaskUser = (id) => {
+  return async dispatch => {
+    try {
+      dispatch(loadTaskBegin());
+      dispatch(setTaskUserId(id));
+    } catch (err) {
+      dispatch(loadTaskErr(err));
+    }
+  };
+};
+
+export { loadTaskDatas, filterTaskDatas, addFullTaskData , changeSelSubjectId, changeSelClassId, changeTopicIds, changeCheckedTasks, changeCurrentPage, setAllCheckTasks,delTask, setTaskUser};

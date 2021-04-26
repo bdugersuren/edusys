@@ -73,7 +73,9 @@ function TaskItem({ task }) {
             <Checkbox onChange={onChange} checked={task.checked}></Checkbox>
 
             <div className={styles.TaskQuestionHeaderTitle}>{task.title}</div>
+            
             <div className="flex-auto"></div>
+            <div>({task.score} оноо)</div>
             <EyeOutlined className={styles.TaskFixedIcons}  onClick={showModal}/> 
           </div>
         </Col>
@@ -81,7 +83,7 @@ function TaskItem({ task }) {
         <Col xs={3} sm={3} md={3} lg={3} xl={3}>
           <div style={{display: 'flex', height: '3.25rem', background:'none'}}>
             <div style={{width:'15%'}} className="p-1">
-              <IconComp iconCode={task.taskLevel_id.code} />           
+              <IconComp iconCode="openQuiz" color="green" size="15" />           
             </div>
             <div style={{width:'15%'}} className="p-1">
                <IconComp iconCode={task.taskType_id.code} />     
@@ -108,9 +110,7 @@ function TaskItem({ task }) {
           {isQuestions && (
             <div>
               <div className={styles.TaskQuestionsList} style={{borderBottom: '1px solid #ddd', paddingBottom: '1rem' }}>
-              {ReactHtmlParser( task.questions)}
-                {/* Монголчууд түүхийн явцдаа уйгуржин, дөрвөлжин бичиг, латин, кирилл зэрэг бичгүүдийг хэрэглэж ирсэн билээ. Энэ нь соёлын ямар шинжид хамаарах вэ? */}
-              Эх сурвалж. Луков - Данненбергийн иргэдийн санаачилсан ухуулах хуудас. Германд атомын аж үйлдвэрийн байгууламжийн эсрэг, ерөөс нутгаа хэт барилгажуулахын эсрэг шууд хүч хэрэглэхгүй суулт хийх, хэвтэж хаалт болох зэргээр эсэргүүцэл гардаг. Энэ бүхэн нь бүх хүний амьдралын төлөө учир цагдаагийн оролцоо хэрэггүй... Парламентын олонхи ч энэ хариуцлагыг бидэнд олгоогүй юм. Бидний энэ арга хэмжээ бол үндсэн хуулиар олгогдсон эсэргүүцэх эрхээ л ашиглаж байгаа хэрэг мөн. Дээрх эх сурвалж нь улс төрийн системийн аль бүрэлдэхүүн хэсгийн тухай өгүүлж байна вэ?
+              {ReactHtmlParser( task.questions)}               
               </div>
 
               <div className={styles.TaskAnswerList}>

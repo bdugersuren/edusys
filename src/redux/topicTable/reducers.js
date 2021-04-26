@@ -24,10 +24,10 @@ const topicTableReducer = (state = initialStateFilter, action) => {
         loading: false,
       };
       case FILTER_TOPIC_DATAS:
-        console.log(data.subject_id, "<=======>", data.class_id);
+        //console.log(data.subject_id, "<=======>", data.class_id);
         return {
           ...state,
-          list: (data.class_id&&data.subject_id)&&state.topics.filter(cls=>cls.class_id===data.class_id).filter(sid=>sid.subject_id===data.subject_id),
+          //list: (data.class_id&&data.subject_id)&&state.topics.filter(cls=>cls.class_id._id===data.class_id).filter(sid=>sid.subject_id._id===data.subject_id),
           loading: false,
         };
     case LOAD_TOPIC_ERR:

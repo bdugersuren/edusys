@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import {loadTaskDatas,setAllCheckTasks } from "../../redux/taskTable/actionCreator";
+import {loadTaskDatas,setAllCheckTasks, setTaskUser } from "../../redux/taskTable/actionCreator";
 
 import TaskItem from "./TaskItem";
-import { Row, Checkbox } from "antd";
+import { Row, Checkbox, Empty, DatePicker, Space} from "antd";
 import styles from "./style.module.css";
 
 import {
@@ -19,20 +19,31 @@ import {
 
 function TasksComp() {
   const dispatch = useDispatch();
+  const { RangePicker } = DatePicker; 
+
 
   const taskTableData = useSelector((state) => state.tasks.list);
   const checkedTopicIds = useSelector((state) => state.tasks.checkedTopicIds);
   const filteredTasksIds = useSelector((state) => state.tasks.filteredTasks);
   const currentPage = useSelector((state) => state.tasks.currentPage);
   const pagesize = useSelector((state) => state.tasks.pageSize);
+  const userId = useSelector((state) => state.auth._id);
 
   const [isExpendAllTask, setIsExpendAllTask] = useState(false);
   const [isExpendAllAns, setIsExpendAllAns] = useState(false);
   const [filteredTasks, setFilteredTasks] = useState([]);
   //const [isAllSelected, setIsAllSelected] = useState(0);
   const [indeterminate, setIndeterminate] = useState(false);
+  const [myCreatedTask, setMyCreatedTask] = useState(false);
+  const [cnt, setCnt] = useState([]);
+  const [createdUserTask, setCreatedUserTask] = useState(false);
 
-  const cnt= taskTableData.filter((t) => checkedTopicIds.includes(t.topic_id)).length;
+  const onHandleMyCreateTask=(e)=>{
+    e.target.checked? dispatch(setTaskUser(userId)):dispatch(setTaskUser(null));
+    setCreatedUserTask(e.target.checked);
+  }
+
+ 
 
   function onAllCheck(e) {
     dispatch(setAllCheckTasks(e.target.checked)); 
@@ -40,7 +51,9 @@ function TasksComp() {
 
   useEffect(() => {
     dispatch(loadTaskDatas());
-  }, []);
+    const cntChange= taskTableData.filter((t) => checkedTopicIds.includes(t.topic_id)).length;
+    setCnt(cntChange);
+  }, [filteredTasksIds]);
 
 
   useEffect(() => {  
@@ -64,8 +77,9 @@ function TasksComp() {
           isExpentAns: isExpendAllAns,          
         });
       });
+      //if(myCreatedTask)filteredData.filter(u=>u.user_id===0);
     setFilteredTasks(filteredData);
-  }, [checkedTopicIds, filteredTasksIds, isExpendAllTask, isExpendAllAns,currentPage, pagesize]);
+  }, [checkedTopicIds, filteredTasksIds, isExpendAllTask, isExpendAllAns,currentPage, pagesize, myCreatedTask]);
 
     return (
     <Row>
@@ -75,6 +89,15 @@ function TasksComp() {
             <Checkbox onChange={onAllCheck} indeterminate={indeterminate}>
               Бүгдийг сонгох
             </Checkbox>
+
+            <Checkbox  defaultChecked={createdUserTask} onChange={onHandleMyCreateTask}>
+              Миний үүсгэсэн
+            </Checkbox>
+
+            <Space direction="vertical" size={12}>
+              <RangePicker />
+            </Space>
+
           </div>
           
           {/* <div className="mx-3 px-3 bg-green-200">            
@@ -97,9 +120,10 @@ function TasksComp() {
         </div>
 
         <div>
-          {filteredTasks.map((t) => {
+          {filteredTasks.length!==0?
+          filteredTasks.map((t) => {
             return <TaskItem key={t._id} task={t} />;
-          })}
+          }):<Empty />}
         </div>
       </div>
     </Row>

@@ -1,7 +1,7 @@
 import actions from './actions';
 //import initialState from '../../demoData/topicData.json';
 
-const { LOAD_TASK_BEGIN, LOAD_TASK_SUCCESS, LOAD_TASK_ERR,FILTER_TASK_DATAS, CHANGE_SELECTED_SUBJECT_ID ,CHANGE_SELECTED_CLASS_ID, CHECKED_SELECTED_TOPIC_IDS,CHENGE_CHECKED_TASK_ID, SET_CURRENT_PAGE, SET_ALL_CHECK_TASK} = actions;
+const { LOAD_TASK_BEGIN, LOAD_TASK_SUCCESS, LOAD_TASK_ERR,FILTER_TASK_DATAS, CHANGE_SELECTED_SUBJECT_ID ,CHANGE_SELECTED_CLASS_ID, CHECKED_SELECTED_TOPIC_IDS,CHENGE_CHECKED_TASK_ID, SET_CURRENT_PAGE, SET_ALL_CHECK_TASK,DELETE_TASK_SUCCESS, SET_TASK_USER_ID} = actions;
 
 const initialStateFilter = {
   list: [],
@@ -90,6 +90,22 @@ const taskTableReducer = (state = initialStateFilter, action) => {
         filteredTasks: action.isOk?[...state.list.filter(t=>state.checkedTopicIds.includes(t.topic_id)).map(tf=>(tf._id))  ]:[],
         loading: false,
       };
+
+     case DELETE_TASK_SUCCESS:     
+     //console.log("isOk : ", action.isOk);
+     return {
+        ...state,
+        filteredTasks:[],
+        loading: false,
+      };
+      
+     case SET_TASK_USER_ID:     
+     return {
+        ...state,
+        userId:action.id,
+        loading: false,
+      };
+
 
 
       

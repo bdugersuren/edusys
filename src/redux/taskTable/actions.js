@@ -9,6 +9,8 @@ const actions = {
   CHENGE_CHECKED_TASK_ID: "CHENGE_CHECKED_TASK_ID",
   SET_CURRENT_PAGE: "SET_CURRENT_PAGE",
   SET_ALL_CHECK_TASK:'SET_ALL_CHECK_TASK',
+  DELETE_TASK_SUCCESS:'DELETE_TASK_SUCCESS',
+  SET_TASK_USER_ID:'SET_TASK_USER_ID',
 
   loadTaskBegin: () => {
     return {
@@ -77,6 +79,20 @@ const actions = {
     return {
       type: actions.SET_ALL_CHECK_TASK,
       isOk,
+    };
+  },
+
+  deleteTaskSuccess: (id) => {
+    return {
+      type: actions.DELETE_TASK_SUCCESS,
+      id,
+    };
+  },
+
+  setTaskUserId: (id) => {
+    return {
+      type: actions.SET_TASK_USER_ID,
+      id,
     };
   },
 

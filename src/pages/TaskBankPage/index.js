@@ -53,7 +53,7 @@ import {
   Badge,
   Button,
   Empty,
-  
+  Affix,  
 } from "antd";
 import styles from "./style.module.css";
 
@@ -66,6 +66,8 @@ const TaskBankPage = () => {
 
   //#region  --------------- useStates ----------------------------------------
   const [checkedTasks, setCheckedTasks] = useState([]);
+  const [top, setTop] = useState(10);
+  const [bottom, setBottom] = useState(10);
   //const [topicNodes, setTopicNodes] = useState([]);
   //#endregion
 
@@ -119,6 +121,7 @@ const TaskBankPage = () => {
 
   //#region ----------------- Үзэгдлүүд ----------------------------------
   const OnChangeDeleteTask = (value) => {
+    console.log("selected", value, filteredTasksIds, filteredTasksIds[0]);
     dispatch(delTask(filteredTasksIds[0]));
   };
 
@@ -339,7 +342,8 @@ const TaskBankPage = () => {
           </div>
         </Col>
         <Col xs={1} sm={1} md={1} lg={1} xl={1}>
-          <div className={styles.TaskRightFixedIcons}>
+        <Affix offsetTop={100} offsetBottom={100}>
+        <div className={styles.TaskRightFixedIcons}>
             
             {filteredTasksIds.length === 1 && (
               <><Tooltip
@@ -401,7 +405,9 @@ const TaskBankPage = () => {
               />
             </Tooltip>
           </div>
-        </Col>
+        
+        </Affix>
+         </Col>
       </Row>
 
       <Row>

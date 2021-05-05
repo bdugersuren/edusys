@@ -136,10 +136,14 @@ const delTask = (id) => {
     //const token = useSelector((state) => state.auth.login.token);
     try {
       dispatch(loadTaskBegin());
-      //console.log("++++++++++++++++++++ >",token);
-      ///dispatch(setAllCheckTask(id));
+      const token = localStorage.getItem('lms-token');
       const del_url='tasks/'+id.toString();
-      await axios.delete(del_url).then(({ data }) => {
+      console.log(token,"~~~~~~~~~~~~~~~~~>",del_url);
+      await axios.delete(del_url, {
+        headers:{
+          'Authorization': token
+        }
+      }).then(({ data }) => {
         return dispatch(deleteTaskSuccess(data));
       });
 

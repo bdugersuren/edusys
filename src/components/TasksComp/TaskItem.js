@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeCheckedTasks} from "../../redux/taskTable/actionCreator";
 import ReactHtmlParser from 'react-html-parser';
 //import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import MathJax from 'react-mathjax-preview'
 
 import { Radio } from "antd";
 import { Checkbox } from "antd";
@@ -155,8 +156,8 @@ function TaskItem({ task }) {
                           className={styles.TaskAnswerRadio}
                           key={ans._id}
                           value={ans._id}>
-                          
-                          {ReactHtmlParser(ans.answer1)}
+                          <MathJax math={ReactHtmlParser(ans.answer1)} />
+                          {/* {ReactHtmlParser(ans.answer1)} */}
                         </Radio>
                       ))}
                   </Radio.Group>

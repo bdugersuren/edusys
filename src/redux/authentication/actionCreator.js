@@ -1,23 +1,21 @@
 import axios from '../../utility/axios';
 //import Cookies from 'js-cookie';
 import actions from './actions';
+import { Redirect} from "react-router";
+
 
 const { loginBegin, loginSuccess, loginErr, logoutBegin, logoutSuccess, logoutErr } = actions;
 
 const login = (username, password) => {
+  
   return async dispatch => {
+   
     try {
       dispatch(loginBegin());
-      
-      // http://localhost:8000
-      await axios.post("users/login", {email:username, password:password})
-      .then(({data})=>{
-        console.log('login information ==========================>',data);
-       // Cookies.set('logedIn', true);        
-       return dispatch(loginSuccess(data));
+      await axios.post("users/login", {email:username, password:password}).then(({ data }) => {
+        //localStorage.setItem('lms-token', data.token);  
+        dispatch(loginSuccess(data));
       });
-      
-
     } catch (err) {
       dispatch(loginErr(err));
     }
@@ -29,7 +27,9 @@ const logOut = () => {
     try {
       dispatch(logoutBegin());
      // Cookies.remove('logedIn');
+     <Redirect to="/"/>
       dispatch(logoutSuccess(null));
+     
     } catch (err) {
       dispatch(logoutErr(err));
     }
@@ -38,14 +38,3 @@ const logOut = () => {
 
 export { login, logOut };
 
-
-/*
-
-
-      setTimeout(() => {
-        Cookies.set('logedIn', true);
-
-        return dispatch(loginSuccess(true));
-      }, 5000);
-
-*/

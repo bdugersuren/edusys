@@ -6,7 +6,7 @@ import styles from './style.module.css';
 function HeaderComp() {
   return (
     <div>
-      <div className={styles.mainTopHeader}>      
+      <div >      
         <MainMenuComp />       
       </div>
     </div>

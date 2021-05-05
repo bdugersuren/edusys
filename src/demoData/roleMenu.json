@@ -5,7 +5,7 @@
 		"path": "/",
 		"title": "Нүүр хуудас",
 		"exact": true,
-        "role_id":"01",
+        "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[]
 	},
 
@@ -15,7 +15,7 @@
 		"path": "/quiz",
 		"title": "Тест",
 		"exact": true,
-        "role_id":"01",
+        "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[
             {
                 "id":"001-01",
@@ -78,7 +78,7 @@
 		"path": "/taskbank",
 		"title": "Даалгаврын сан",
 		"exact": true,
-        "role_id":"01",
+        "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[
             {
                 "id":"002-01",
@@ -115,7 +115,7 @@
 		"path": "/login",
 		"title": "Нэвтрэх",
 		"exact": true,
-        "role_id":"01",
+        "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[]
 	},
     {
@@ -124,7 +124,7 @@
 		"path": "/register",
 		"title": "Бүртгүүлэх",
 		"exact": true,
-        "role_id":"01",
+        "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[]
 	},
     {
@@ -133,7 +133,7 @@
 		"path": "/forget",
 		"title": "Нууц үгээ мартсан",
 		"exact": true,
-        "role_id":"01",
+        "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[]
 	}
 ]

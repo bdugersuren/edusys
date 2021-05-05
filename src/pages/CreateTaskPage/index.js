@@ -16,7 +16,9 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 import MathEditor from "ckeditor5-build-classic-mathtype";
 import ReactHtmlParser from "react-html-parser";
-import MathJax from "react-mathjax3";
+//import MathJax from "react-mathjax3";
+//import ClassicEditor from "../../build/ckeditor";
+import MathJax from 'react-mathjax-preview';
 
 import { BiBookReader } from "react-icons/bi";
 
@@ -34,7 +36,8 @@ import {
   Radio,
   Tooltip,
   Badge,
-  Input,Rate,InputNumber 
+  Input, Rate, InputNumber,
+  Modal
 } from "antd";
 
 import styles from "./style.module.css";
@@ -95,24 +98,24 @@ function CreateTaskPage() {
   const [editor, setEditor] = useState(null);
   const [lvl, setLvl] = useState(1);
   const [correctAnswer, setCorrectAnswer] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-
-  const  onHandleCorrectAns=(e)=>{
+  const onHandleCorrectAns = (e) => {
     setCorrectAnswer(e.target.value);
     console.log("======================          ${value}         =====================", e.target.value);
   }
   //const [filteredTasks, setFilteredTasks] = useState([]);
   const [task, setTask] = useState({
-    title:"",
+    title: "",
     questions: "",
-    correctFeedback:"",
-    incorrectFeedback:"",
+    correctFeedback: "",
+    incorrectFeedback: "",
     taskType_id: "606efc7cb5f4f304b423dabb",
     user_id: "5fd77142b3c8ca42a0d2a579",
     topic_id: "606da27de20d6052e0b776f9",
     taskLevel_id: "606efacfb5f4f304b423dab4",
     ndx: "",
-    score:0,
+    score: 0,
     title: "Энгийг бутархайн хуваарь нь ижил үед",
     description: "Энгийн бутархайг хуваарь нь ялгаатай бол ижил болгох ёстой",
     createdDate: "2021-04-13T08:12:53.837Z",
@@ -128,29 +131,41 @@ function CreateTaskPage() {
     ],
   });
 
-  const onChangeScore=(value)=> {
+  const handleModalShow = () => {
+    setIsModalVisible(true);
+  }
+
+  const handleModalOk = () => {
+    setIsModalVisible(true);
+  }
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  }
+  const onChangeScore = (value) => {
     setTask({ ...task, score: value });
   }
-  const  onHandleAnsType = (e) => {
+
+
+  const onHandleAnsType = (e) => {
     setTask({ ...task, taskType_id: e.target.value });
-};
+  };
 
-  
-  const  onSelectTopicId = (selectedKeysValue, info) => {
+
+  const onSelectTopicId = (selectedKeysValue, info) => {
     setTask({ ...task, topic_id: selectedKeysValue[0] });
-};
+  };
 
-  const  handleChangeLvl = value => {
-    setTask({ ...task, taskLevel_id: taskLevel[value-1]._id });
+  const handleChangeLvl = value => {
+    setTask({ ...task, taskLevel_id: taskLevel[value - 1]._id });
     setLvl(value);
-};
-  const onChangeTitle=(e)=>{
+  };
+  const onChangeTitle = (e) => {
     setTask({ ...task, title: e.target.value });
   }
-  const onChangeCorrectFeedback=(e)=>{
+  const onChangeCorrectFeedback = (e) => {
     setTask({ ...task, correctFeedback: e.target.value });
   }
-  const onChangeIncorrectFeedback=(e)=>{
+  const onChangeIncorrectFeedback = (e) => {
     setTask({ ...task, incorrectFeedback: e.target.value });
   }
 
@@ -189,7 +204,7 @@ function CreateTaskPage() {
     dispatch(loadClassDatas());
     dispatch(loadSubjectDatas());
     dispatch(loadTaskDatas());
-    dispatch(loadTaskLevelDatas());    
+    dispatch(loadTaskLevelDatas());
   }, []);
 
   const subjectTableData = useSelector((state) => state.subjectTable.list);
@@ -200,7 +215,7 @@ function CreateTaskPage() {
   const selSubjId = useSelector((state) => state.tasks.selectedSubjId);
   const selClssId = useSelector((state) => state.tasks.selectedClassId);
   const taskLevel = useSelector((state) => state.taskLevel.list);
-  
+
 
   const OnChangeClass = (value) => {
     setClassId(value);
@@ -265,7 +280,56 @@ function CreateTaskPage() {
         <Col xs={7} sm={7} md={7} lg={7} xl={7}></Col>
         <Col xs={11} sm={11} md={11} lg={11} xl={11}>
           <div className={styles.TaskFixedIcons}>
-            <ArrowLeftOutlined className={styles.TaskFixedIcons} />
+            <Tooltip
+              color="#FF0000"
+              placement="bottom"
+              title="Харах"
+              className="hover: text-5xl hover:bg-gray-200 w-auto"
+            >
+              <Button
+                onClick={handleModalShow}
+                icon={<EyeOutlined />}
+              />
+
+            </Tooltip>
+
+
+
+            <Tooltip
+              color="#FF0000"
+              placement="bottom"
+              title="Цэвэрлэх"
+              className="hover: text-5xl hover:bg-gray-200  w-auto"
+            >
+              <DeleteOutlined
+                style={{ color: "red" }}
+                className={styles.TaskFixedIcons}
+              />
+            </Tooltip>
+
+
+            <Tooltip
+              color="#01a3a4"
+              placement="bottom"
+              title="Хадгалах"
+              className="hover: text-5xl hover:bg-gray-200 h-8 w-8 m-2"
+            >
+              <Button
+                onClick={handleSaveTask}
+                icon={<SaveOutlined />}
+              />
+            </Tooltip>
+
+
+
+
+
+
+
+
+
+
+            {/* <ArrowLeftOutlined className={styles.TaskFixedIcons} />
             <ArrowRightOutlined className={styles.TaskFixedIcons} />
             <FormOutlined className={styles.TaskFixedIcons} />
             <CopyOutlined className={styles.TaskFixedIcons} />
@@ -273,7 +337,7 @@ function CreateTaskPage() {
             <PaperClipOutlined className={styles.TaskFixedIcons} />
             <PrinterOutlined className={styles.TaskFixedIcons} />
             <CheckCircleOutlined className={styles.TaskFixedIcons} />
-            <EyeOutlined className={styles.TaskFixedIcons} />
+            <EyeOutlined className={styles.TaskFixedIcons} /> */}
           </div>
         </Col>
         <Col xs={6} sm={6} md={6} lg={6} xl={6}>
@@ -295,9 +359,9 @@ function CreateTaskPage() {
               placeholder="Хичээл сонгох"
               //optionFilterProp="children"
               onChange={OnChangeSubject}
-              //onFocus={onFocus}
-              //onBlur={onBlur}
-              //onSearch={onSearch}
+            //onFocus={onFocus}
+            //onBlur={onBlur}
+            //onSearch={onSearch}
             >
               {subjectTableData.map((item) => (
                 <Option key={item._id} value={item._id}>
@@ -322,6 +386,7 @@ function CreateTaskPage() {
           </div>
         </Col>
         <Col xs={19} sm={19} md={19} lg={19} xl={19}>
+          
           <div className="flex">
             {/* <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
             <Statistic 
@@ -335,10 +400,18 @@ function CreateTaskPage() {
               buttonStyle="solid"
               style={{ marginTop: 16 }}
             >
-              <Radio.Button value="606efc71b5f4f304b423daba" onChange={onHandleAnsType}>
-                {" "}
-                <IconComp iconCode="list" color="#18FFff" size="24" />{" "}
-                <div>Олон сонголттой</div>{" "}
+              <Radio.Button 
+                value="606efc71b5f4f304b423daba" 
+                onChange={onHandleAnsType}               
+                >
+                  <Button
+                     icon={<IconComp iconCode="list" color="#18FFff" size="24" />}
+                     title="Олон сонголттой"
+                  />
+                     
+                
+                
+                
               </Radio.Button>
               <Radio.Button value="6084498c133c565c4d52e6f4" onChange={onHandleAnsType}>
                 {" "}
@@ -354,21 +427,44 @@ function CreateTaskPage() {
                 <IconComp iconCode="openQuiz" color="#18FFff" size="24" /> Нөхөх
               </Radio.Button>
             </Radio.Group>
-         
-            
-                <span>
-                  <Rate
-                    tooltips={taskLevel.map(t=>{return(t.name)})}
-                    onChange={handleChangeLvl}
-                    value={lvl}
-                    count={taskLevel.length}
-                  />
-                  {lvl ? (
-                    <span className="ant-rate-text"></span>
-                  ) : (
-                    ""
-                  )}
-                </span>
+
+            <div className="flex-row border-1">
+              <div>
+                <Rate
+                  tooltips={taskLevel.map(t => { return (t.name) })}
+                  onChange={handleChangeLvl}
+                  value={lvl}
+                  count={taskLevel.length}
+                />
+
+              </div>
+              <div>
+                {lvl ? (
+                  <span className="ant-rate-text">
+                    Анхан
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+
+
+
+            <div className="flex-row">
+              <div>
+                <InputNumber min={0} max={100} defaultValue={1} onChange={onChangeScore} />
+              </div>
+
+              <div>
+                <label>
+                  Тестийн оноо
+                </label>
+              </div>
+
+
+            </div>
+
 
           </div>
         </Col>
@@ -387,29 +483,12 @@ function CreateTaskPage() {
           </div>
         </Col>
         <Col xs={17} sm={18} md={18} lg={18} xl={18}>
-          <Row>
-            <Col className="flex ">
-            <InputNumber min={0} max={100} defaultValue={1} onChange={onChangeScore} />
 
-
-
-              <div className="flex mx-4">
-                <AiOutlineEye />
-                <div>Харах</div>
-              </div>
-              <div className="flex mx-4">
-                <BiSave />
-                <div>Хадгалах</div>
-              </div>
-
-              
-            </Col>
-          </Row>
 
           <Row>
             <Col className="w-full">
-              <Input placeholder="Тухайн даалгаврын гарчиг" showCount maxLength={50} onChange={onChangeTitle}  />
-              
+              <Input placeholder="Тухайн даалгаврын гарчиг" showCount maxLength={50} onChange={onChangeTitle} />
+
             </Col>
           </Row>
 
@@ -430,12 +509,20 @@ function CreateTaskPage() {
                     console.log({ event, editor, data });
                     handleTaskChange(data);
                   }}
-                  // onBlur={ ( event, editor ) => {
-                  //     console.log( 'Blur.', editor );
-                  // } }
-                  // onFocus={ ( event, editor ) => {
-                  //     console.log( 'Focus.', editor );
-                  // } }
+
+                  config={
+                    {
+                      ckfinder: {
+                        uploadUrl: 'http://localhost:8001/uploads/images'
+                      }
+                    }
+                  }
+                // onBlur={ ( event, editor ) => {
+                //     console.log( 'Blur.', editor );
+                // } }
+                // onFocus={ ( event, editor ) => {
+                //     console.log( 'Focus.', editor );
+                // } }
                 />
               </div>
               {/* ----------------- Хариулт div --------------------------- */}
@@ -481,6 +568,13 @@ function CreateTaskPage() {
                         // console.log( { event, editor, data });
                         handleInputChange(data, i);
                       }}
+
+                      config={{
+                        ckfinder: {
+                          uploadUrl: 'http://localhost:8001/uploads/images'
+                        }
+                      }}
+
                     />
                   </div>
                 );
@@ -504,27 +598,33 @@ function CreateTaskPage() {
             <Col className="w-full">
               <div>
                 <div>Зөв хариултан өгөх тайлбар</div>
-                <TextArea rows={4}  onChange={onChangeCorrectFeedback} />
+                <TextArea rows={4} onChange={onChangeCorrectFeedback} />
               </div>
               <div>
                 <div>Буруу хариултан өгөх тайлбар</div>
-                <TextArea rows={4} onChange={onChangeIncorrectFeedback}/>
+                <TextArea rows={4} onChange={onChangeIncorrectFeedback} />
               </div>
             </Col>
           </Row>
 
-{/* <Row>
-  <Col className="w-96">
-                  { JSON.stringify(task)}
-  </Col>
-</Row> */}
+          <Row>
+            <Col className="w-96">
+              {ReactHtmlParser(task.questions)}
 
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className="w-96">
+              <MathJax math={ReactHtmlParser(task.questions)} />
+            </Col>
+          </Row>
 
 
         </Col>
         <Col xs={1} sm={1} md={1} lg={1} xl={1}>
           <div className={styles.TaskRightFixedIcons}>
-            <FormOutlined className={styles.TaskFixedIcons} />
+            {/* <FormOutlined className={styles.TaskFixedIcons} />
             <UndoOutlined className={styles.TaskFixedIcons} />
             <RedoOutlined className={styles.TaskFixedIcons} />
 
@@ -532,7 +632,7 @@ function CreateTaskPage() {
             <PrinterOutlined className={styles.TaskFixedIcons} />
             <PaperClipOutlined className={styles.TaskFixedIcons} />
             <PictureOutlined className={styles.TaskFixedIcons} />
-            <PlaySquareOutlined className={styles.TaskFixedIcons} />
+            <PlaySquareOutlined className={styles.TaskFixedIcons} /> */}
             {1 && (
               <>
                 <Tooltip
@@ -541,17 +641,13 @@ function CreateTaskPage() {
                   title="Харах"
                   className="hover: text-5xl hover:bg-gray-200 w-auto"
                 >
-                  <EyeOutlined className={styles.TaskFixedIcons} />
+                  <Button
+                    onClick={handleModalShow}
+                    icon={<EyeOutlined />}
+                  />
+
                 </Tooltip>
 
-                <Tooltip
-                  color="#FF0000"
-                  placement="left"
-                  title="Харах"
-                  className="hover: text-5xl hover:bg-gray-200 w-auto"
-                >
-                  <CopyOutlined className={styles.TaskFixedIcons} />
-                </Tooltip>
               </>
             )}
 
@@ -559,15 +655,13 @@ function CreateTaskPage() {
               <Tooltip
                 color="#FF0000"
                 placement="left"
-                title="Устгах"
+                title="Цэвэрлэх"
                 className="hover: text-5xl hover:bg-gray-200  w-auto"
               >
-                <Badge count={1}>
-                  <DeleteOutlined
-                    style={{ color: "red" }}
-                    className={styles.TaskFixedIcons}
-                  />
-                </Badge>
+                <DeleteOutlined
+                  style={{ color: "red" }}
+                  className={styles.TaskFixedIcons}
+                />
               </Tooltip>
             )}
 
@@ -577,14 +671,49 @@ function CreateTaskPage() {
               title="Хадгалах"
               className="hover: text-5xl hover:bg-gray-200 h-8 w-8 m-2"
             >
-              <Button 
-                  onClick={handleSaveTask}
-                  icon={<SaveOutlined />}                  
-              />                            
+              <Button
+                onClick={handleSaveTask}
+                icon={<SaveOutlined />}
+              />
             </Tooltip>
           </div>
         </Col>
       </Row>
+
+
+      <Modal title="Даалгаврын харагдах байдал"
+        visible={isModalVisible}
+        onOk={handleModalOk}
+        onCancel={handleModalCancel}
+        width={1000}
+      >
+
+        {ReactHtmlParser(task.questions)}
+        <hr />
+
+        <div >
+
+          <Radio.Group
+          //onChange={onChange} 
+          //value={value}
+          >
+            {
+              task.answers.map((ans, index) => (
+                <Radio
+                  className={styles.TaskAnswerRadio}
+                  key={index}
+                  value={index}>
+                  {ReactHtmlParser(ans.answer1)}
+                  {/* {ReactHtmlParser(ans.answer1)} */}
+                </Radio>
+              ))}
+          </Radio.Group>
+
+        </div>
+
+      </Modal>
+
+
     </>
   );
 }

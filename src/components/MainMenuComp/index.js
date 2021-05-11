@@ -107,7 +107,7 @@ const MainMenuComp = () => {
             selectedKeys={[current]}
             mode="horizontal"
           >
-            {roleMenuDate.filter(m => m.role_id === userRole).map((node) => {
+            {roleMenuDate.filter(m => m.role_id.includes(userRole) ).map((node) => {
               return node.children.length > 0 ? (
                 <SubMenu
                   key={node.id}

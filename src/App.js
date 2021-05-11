@@ -22,6 +22,9 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const QuizPage = lazy(() => import('./pages/QuizPage'));
 const TaskBankPage = lazy(() => import('./pages/TaskBankPage'));
 const CreateTaskPage = lazy(() => import('./pages/CreateTaskPage'));
+const TopicsPage = lazy(() => import('./pages/TopicsPage'));
+const SchoolPage = lazy(() => import('./pages/SchoolPage'));
+
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 
@@ -35,7 +38,9 @@ const ProviderConfig = () => {
      
       <AppRoute path="/quiz" layout={MainLayout} component={QuizPage} />
       <ProtectedRoute path="/taskbank" isAuth={isLogin!==null} layout={MainLayout}  component={TaskBankPage} />
+      <ProtectedRoute path="/schools" isAuth={isLogin!==null} layout={MainLayout}  component={SchoolPage} />
       <ProtectedRoute path="/taskadd" isAuth={isLogin!==null}  layout={MainLayout}  component={CreateTaskPage} />
+      <ProtectedRoute path="/topics" isAuth={isLogin!==null}  layout={MainLayout}  component={TopicsPage} />
       <AppRoute exact  path="/login"  layout={AuthLayout}  component={LoginPage} />
       <AppRoute exact  path="/register"  layout={AuthLayout}  component={RegisterPage} />
       <AppRoute exact path="/" layout={HomeLayout} component={HomePage} />

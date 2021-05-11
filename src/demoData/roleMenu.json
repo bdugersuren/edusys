@@ -118,6 +118,7 @@
         "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[]
 	},
+   
     {
         "id":"004",
 		"component": "TaskBankPage",
@@ -132,6 +133,16 @@
 		"component": "TaskBankPage",
 		"path": "/forget",
 		"title": "Нууц үгээ мартсан",
+		"exact": true,
+        "role_id":["user", "teacher", "admin", "student", "manager"],
+        "children":[]
+	}
+    ,
+    {
+        "id":"006",
+		"component": "TopicsPage",
+		"path": "/topics",
+		"title": "Хичээлийн сэдэв",
 		"exact": true,
         "role_id":["user", "teacher", "admin", "student", "manager"],
         "children":[]

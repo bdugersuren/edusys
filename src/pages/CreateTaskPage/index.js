@@ -37,7 +37,9 @@ import {
   Tooltip,
   Badge,
   Input, Rate, InputNumber,
-  Modal
+  Modal,
+  Space,
+  Checkbox
 } from "antd";
 
 import styles from "./style.module.css";
@@ -89,6 +91,17 @@ const openNotification = () => {
 };
 
 function CreateTaskPage() {
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadTaskLevelDatas());
+    dispatch(loadTopicDatas());
+    dispatch(loadClassDatas());
+    dispatch(loadSubjectDatas());
+    dispatch(loadTaskDatas());
+
+  }, []);
+
   //const [checked, setChecked] = useState([]);
   //const [expanded, setExpanded] = useState([]);
   const [classId, setClassId] = useState(null);
@@ -100,10 +113,6 @@ function CreateTaskPage() {
   const [correctAnswer, setCorrectAnswer] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const onHandleCorrectAns = (e) => {
-    setCorrectAnswer(e.target.value);
-    console.log("======================          ${value}         =====================", e.target.value);
-  }
   //const [filteredTasks, setFilteredTasks] = useState([]);
   const [task, setTask] = useState({
     title: "",
@@ -115,22 +124,41 @@ function CreateTaskPage() {
     topic_id: "606da27de20d6052e0b776f9",
     taskLevel_id: "606efacfb5f4f304b423dab4",
     ndx: "",
-    score: 0,
+    score: 1,
     title: "Энгийг бутархайн хуваарь нь ижил үед",
     description: "Энгийн бутархайг хуваарь нь ялгаатай бол ижил болгох ёстой",
     createdDate: "2021-04-13T08:12:53.837Z",
     answers: [
       {
+        isCorrect:false,
         answer1: "",
         score: 0,
       },
       {
+        isCorrect:false,
         answer1: "",
         score: 0,
       },
     ],
   });
+  
+  const onHandleCorrectAns = (e) => {
 
+    //const lst = task.answers.filter((a, i) => index !== i);
+    setTask({ 
+      ...task, 
+      answers: [...task.answers.map((a, i) => {
+        return({...a, isCorrect:(e.target.value===i)}) ;
+      })]
+    });
+
+    setCorrectAnswer(e.target.value);
+    console.log(`===    ${e.target.value}  ====`, e.target.checked);
+  }
+
+  const handleRightClickTree = () => {
+    console.log("--------------- Tight click ----------------");
+  }
   const handleModalShow = () => {
     setIsModalVisible(true);
   }
@@ -198,14 +226,7 @@ function CreateTaskPage() {
     openNotification();
   };
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadTopicDatas());
-    dispatch(loadClassDatas());
-    dispatch(loadSubjectDatas());
-    dispatch(loadTaskDatas());
-    dispatch(loadTaskLevelDatas());
-  }, []);
+
 
   const subjectTableData = useSelector((state) => state.subjectTable.list);
   const classTableData = useSelector((state) => state.classTable.list);
@@ -386,7 +407,7 @@ function CreateTaskPage() {
           </div>
         </Col>
         <Col xs={19} sm={19} md={19} lg={19} xl={19}>
-          
+
           <div className="flex">
             {/* <Card style={{width:'200px',padding:'0px',margin:'0px'}}>
             <Statistic 
@@ -398,22 +419,19 @@ function CreateTaskPage() {
             <Radio.Group
               defaultValue="c"
               buttonStyle="solid"
-              style={{ marginTop: 16 }}
+              style={{ color: 'black' }}
             >
-              <Radio.Button 
-                value="606efc71b5f4f304b423daba" 
-                onChange={onHandleAnsType}               
-                >
-                  <Button
-                     icon={<IconComp iconCode="list" color="#18FFff" size="24" />}
-                     title="Олон сонголттой"
-                  />
-                     
-                
-                
-                
+              <Radio.Button
+                style={{ color: 'black', textAlign: 'center' }}
+                value="606efc71b5f4f304b423daba"
+                onChange={onHandleAnsType}
+              >
+                <IconComp iconCode="openQuiz" color="#18FFff" size="24" />
+                   Олон сонголттой
               </Radio.Button>
-              <Radio.Button value="6084498c133c565c4d52e6f4" onChange={onHandleAnsType}>
+              <Radio.Button
+                value="6084498c133c565c4d52e6f4" onChange={onHandleAnsType}
+                style={{ color: 'black' }}>
                 {" "}
                 <IconComp iconCode="openQuiz" color="#18FFff" size="24" />{" "}
                 Нээлттэй
@@ -428,7 +446,7 @@ function CreateTaskPage() {
               </Radio.Button>
             </Radio.Group>
 
-            <div className="flex-row border-1">
+            <div className="flex-row border-1 mx-8">
               <div>
                 <Rate
                   tooltips={taskLevel.map(t => { return (t.name) })}
@@ -436,21 +454,11 @@ function CreateTaskPage() {
                   value={lvl}
                   count={taskLevel.length}
                 />
-
               </div>
               <div>
-                {lvl ? (
-                  <span className="ant-rate-text">
-                    Анхан
-                  </span>
-                ) : (
-                  ""
-                )}
+                {taskLevel[lvl - 1] && taskLevel[lvl - 1].name}
               </div>
             </div>
-
-
-
             <div className="flex-row">
               <div>
                 <InputNumber min={0} max={100} defaultValue={1} onChange={onChangeScore} />
@@ -461,11 +469,7 @@ function CreateTaskPage() {
                   Тестийн оноо
                 </label>
               </div>
-
-
             </div>
-
-
           </div>
         </Col>
         <Col xs={0} sm={0} md={0} lg={0} xl={0}></Col>
@@ -479,12 +483,11 @@ function CreateTaskPage() {
               onSelect={onSelectTopicId}
               //onCheck={onCheckedTopicIds}
               treeData={topicNodes}
+              onRightClick={handleRightClickTree}
             />
           </div>
         </Col>
         <Col xs={17} sm={18} md={18} lg={18} xl={18}>
-
-
           <Row>
             <Col className="w-full">
               <Input placeholder="Тухайн даалгаврын гарчиг" showCount maxLength={50} onChange={onChangeTitle} />
@@ -526,32 +529,25 @@ function CreateTaskPage() {
                 />
               </div>
               {/* ----------------- Хариулт div --------------------------- */}
-              <div className="flex">
-                <div>Зөв Хариулт</div> <BiQuestionMark />
-              </div>
-              <Radio.Group onChange={onChange} value={correctAnswer}>
-                {task.answers.map((x, i) => (
-                  <Radio value={i + 1} onChange={onHandleCorrectAns} >Хариулт - {i + 1}</Radio>
-                ))}
-              </Radio.Group>
+<hr className="m-4 p-4"/>
               {task.answers.map((x, i) => {
                 return (
                   <div key={i}>
                     <hr />
                     <div className="flex">
-                      <div className="text-center flex-auto">Хариулт-{i}</div>
-                      <div className=""></div>
+                    <Checkbox value={i} checked={x.isCorrect} 
+                    onChange={onHandleCorrectAns}> Хариулт-{i+1}</Checkbox>
+                      <div className="flex-auto"></div>
                       <div
                         className="flex"
                         style={{ color: "red", backgroundColor: "gray" }}
                       >
-                        {" "}
                         {task.answers.length !== 1 && (
                           <button onClick={() => handleRemoveClick(i)}>
                             <div>
                               <BiX />
-                            </div>{" "}
-                            <div>Remore</div>{" "}
+                            </div>
+                            <div>Remore</div>
                           </button>
                         )}
                       </div>
@@ -568,7 +564,6 @@ function CreateTaskPage() {
                         // console.log( { event, editor, data });
                         handleInputChange(data, i);
                       }}
-
                       config={{
                         ckfinder: {
                           uploadUrl: 'http://localhost:8001/uploads/images'
@@ -609,14 +604,26 @@ function CreateTaskPage() {
 
           <Row>
             <Col className="w-96">
-              {ReactHtmlParser(task.questions)}
+              {ReactHtmlParser(JSON.stringify(task) )}
+ {/*<MathEditor data={task.questions} /> */}
+
+
+          {/* <MathJax
+          math={task.questions}
+          ima
+          >
+          
+          </MathJax> */}
 
             </Col>
           </Row>
 
           <Row>
             <Col className="w-96">
-              <MathJax math={ReactHtmlParser(task.questions)} />
+              {/* <MathJax math={ReactHtmlParser(task.questions)} />
+               
+              <MathEditor data={ans.answer1} />
+              */}
             </Col>
           </Row>
 
@@ -697,16 +704,20 @@ function CreateTaskPage() {
           //onChange={onChange} 
           //value={value}
           >
-            {
-              task.answers.map((ans, index) => (
-                <Radio
-                  className={styles.TaskAnswerRadio}
-                  key={index}
-                  value={index}>
-                  {ReactHtmlParser(ans.answer1)}
-                  {/* {ReactHtmlParser(ans.answer1)} */}
-                </Radio>
-              ))}
+            <Space direction="vertical">
+              {
+                task.answers.map((ans, index) => (
+                  <Radio
+                    className={styles.TaskAnswerRadio}
+                    key={index}
+                    value={index}>
+                    {ReactHtmlParser(ans.answer1)}
+                    {/* <MathEditor /> */}
+                    
+                    <MathEditor data={ans.answer1} />
+                  </Radio>
+                ))}
+            </Space>
           </Radio.Group>
 
         </div>
@@ -719,3 +730,26 @@ function CreateTaskPage() {
 }
 
 export default CreateTaskPage;
+
+
+
+
+/** 
+ 
+                  <div className="flex">
+                <div>Зөв Хариулт</div> <BiQuestionMark />
+              </div>
+              <Radio.Group onChange={onChange} value={correctAnswer}>
+                {task.answers.map((x, i) => (
+                  <Radio value={i + 1} onChange={onHandleCorrectAns} >
+                    Хариулт - {i + 1}
+                  
+                  
+                  </Radio>
+                ))}
+              </Radio.Group>
+
+
+
+
+*/

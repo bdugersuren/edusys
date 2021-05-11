@@ -5,11 +5,9 @@ import ReactHtmlParser from 'react-html-parser';
 //import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import MathJax from 'react-mathjax-preview'
 
-import { Radio } from "antd";
-import { Checkbox } from "antd";
-import { Row, Col,Modal } from "antd";
+import { Row, Col,Modal, Progress, Checkbox, Radio ,Space } from "antd";
 import styles from "./style.module.css";
-//#region  Icons
+//#region  ----------------- Icons --------------------------------
 
 import {
   CgMaximize,
@@ -18,9 +16,6 @@ import {
   CgChevronUp,
 } from "react-icons/cg";
 
-//import {BiCheckboxChecked, BiCheckbox, BiArrowFromTop, BiSortUp,} from "react-icons/bi";
-
-
 import {
   EyeOutlined
 } from "@ant-design/icons";
@@ -28,32 +23,29 @@ import IconComp from "../IconComp";
 //#endregion
 
 
-
 function TaskItem({ task }) {
   const dispatch = useDispatch();
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAnswer, setIsAnswer] = useState(false);
   const [isQuestions, setIsQuestions] = useState(task.isExpendAllTask);
-  //const [isChoose, setIsChoose] = useState(false);
   const [value, setValue] = useState(null);
 
   const checkedTaskIds = useSelector((state) => state.tasks.checkedTaskIds);
 
 
-  function onChange(e) {
-    //console.log(`checked = ${e.target.checked}    id=>  ${checkedTaskIds}`);
-    //setValue(e.target.value);
-    dispatch(changeCheckedTasks({id:task._id, isChecked:e.target.checked}));
-  }
 
   useEffect(() => {
     setIsAnswer(task.isExpentAns);
     setIsQuestions(task.isExpentTask);
   }, [task]);
 
-  //console.log(task);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  //#region  ------------------ Functions ----------------------------------
+  function onChange(e) {
+    //console.log(`checked = ${e.target.checked}    id=>  ${checkedTaskIds}`);
+    //setValue(e.target.value);
+    dispatch(changeCheckedTasks({id:task._id, isChecked:e.target.checked}));
+  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -66,6 +58,9 @@ function TaskItem({ task }) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+//#endregion
+
+
   return (
     <div>
       <Row>
@@ -76,8 +71,12 @@ function TaskItem({ task }) {
             <div className={styles.TaskQuestionHeaderTitle}>{task.title}</div>
             
             <div className="flex-auto"></div>
-            <div>({task.score} оноо)</div>
-            <EyeOutlined className={styles.TaskFixedIcons}  onClick={showModal}/> 
+            <div className={styles.TaskQuestionHeaderTitle}>({task.score} оноо)</div>
+            <div className={styles.TaskQuestionHeaderTitle}>
+              <EyeOutlined onClick={showModal}/> 
+            </div>
+            
+            
           </div>
         </Col>
 
@@ -103,6 +102,7 @@ function TaskItem({ task }) {
                 <CgChevronDown className={styles.TaskListIcons} />
               )}
             </div>
+            <Progress percent={50} steps={3} strokeColor="#52c41a"/>
           </div>
         </Col>
       </Row>
@@ -119,6 +119,7 @@ function TaskItem({ task }) {
                   <Radio.Group 
                       //onChange={onChange} 
                       value={value}>
+                       <Space direction="vertical">
                     {task.q_answer.length > 0 &&
                       task.q_answer.map((ans) => (
                         <Radio
@@ -131,6 +132,7 @@ function TaskItem({ task }) {
                           
                         </Radio>
                       ))}
+                      </Space>
                   </Radio.Group>
                 )}
               </div>
@@ -150,6 +152,7 @@ function TaskItem({ task }) {
         <div className={styles.TaskAnswerList}>
                 
                   <Radio.Group onChange={onChange} value={value}>
+                  <Space direction="vertical">
                     {task.q_answer.length > 0 &&
                       task.q_answer.map((ans) => (
                         <Radio
@@ -160,6 +163,7 @@ function TaskItem({ task }) {
                           {/* {ReactHtmlParser(ans.answer1)} */}
                         </Radio>
                       ))}
+                      </Space>
                   </Radio.Group>
               
               </div>

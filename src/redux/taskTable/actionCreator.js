@@ -1,7 +1,7 @@
 import actions from './actions';
 //import initialState from '../../demoData/topicData.json';
 import axios from "../../utility/axios";
-import {useSelector} from 'react-redux';
+//import {useSelector} from 'react-redux';
 
 
 const { loadTaskBegin, loadTaskSuccess, loadTaskErr, changeSelectedSubjectId, changeSelectClassId, changeCheckedTopicIds , changeCheckedTaskId, setCurrentPage, setAllCheckTask, deleteTaskSuccess, setTaskUserId} = actions;
@@ -145,6 +145,7 @@ const delTask = (id) => {
         }
       }).then(({ data }) => {
         return dispatch(deleteTaskSuccess(data));
+        
       });
 
     } catch (err) {

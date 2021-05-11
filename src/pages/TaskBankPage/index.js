@@ -328,6 +328,7 @@ const TaskBankPage = () => {
           <div className={styles.taskTree}>
             {topicNodes.length!==0?<Tree
               checkable
+              draggable
               checkedKeys={checkedTopicIds}
               onSelect={onSelectTopicTree}
               onCheck={onCheckedTopicIds}

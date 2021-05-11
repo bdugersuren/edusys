@@ -11,6 +11,7 @@ const initState = {
   email:null,
   loading: false,
   error: null,
+  menu:[]
 };
 
 /**
@@ -34,6 +35,7 @@ const AuthReducer = (state = initState, action) => {
         email:data.user.email,
         role:data.user.role,
         loading: false,
+        menu:data.menu
       };
      
     case LOGIN_ERR:

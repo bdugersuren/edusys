@@ -5,12 +5,15 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
 
+import {useDispatch, useSelector} from 'react-redux'
+
 
 //Layouts
 import AppRoute from "./layouts/AppRoute";
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import HomeLayout from "./layouts/HomeLayout";
+import ProtectedRoute from "./layouts/ProtectedRoute";
 
 //Pages
 
@@ -19,18 +22,25 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const QuizPage = lazy(() => import('./pages/QuizPage'));
 const TaskBankPage = lazy(() => import('./pages/TaskBankPage'));
 const CreateTaskPage = lazy(() => import('./pages/CreateTaskPage'));
+const TopicsPage = lazy(() => import('./pages/TopicsPage'));
+const SchoolPage = lazy(() => import('./pages/SchoolPage'));
+
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 
 
 
 const ProviderConfig = () => {
+  const isLogin = useSelector((state) => state.auth._id);
+
   return (
     <Router>
      
       <AppRoute path="/quiz" layout={MainLayout} component={QuizPage} />
-      <AppRoute path="/taskbank"  layout={MainLayout}  component={TaskBankPage} />
-      <AppRoute path="/taskadd"  layout={MainLayout}  component={CreateTaskPage} />
+      <ProtectedRoute path="/taskbank" isAuth={isLogin!==null} layout={MainLayout}  component={TaskBankPage} />
+      <ProtectedRoute path="/schools" isAuth={isLogin!==null} layout={MainLayout}  component={SchoolPage} />
+      <ProtectedRoute path="/taskadd" isAuth={isLogin!==null}  layout={MainLayout}  component={CreateTaskPage} />
+      <ProtectedRoute path="/topics" isAuth={isLogin!==null}  layout={MainLayout}  component={TopicsPage} />
       <AppRoute exact  path="/login"  layout={AuthLayout}  component={LoginPage} />
       <AppRoute exact  path="/register"  layout={AuthLayout}  component={RegisterPage} />
       <AppRoute exact path="/" layout={HomeLayout} component={HomePage} />
